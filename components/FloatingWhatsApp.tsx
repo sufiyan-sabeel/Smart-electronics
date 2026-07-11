@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect, useRef } from "react"
 import { businessInfo, formatPhoneNumber, getWhatsAppLink, getCallLink } from "@/lib/business-info"
 import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 
 export function FloatingWhatsApp() {
@@ -140,6 +140,7 @@ export function FloatingWhatsApp() {
           )}
         </AnimatePresence>
 
+        <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <motion.button
@@ -211,6 +212,7 @@ export function FloatingWhatsApp() {
             <p className="text-sm text-slate-500 dark:text-slate-400">Click to chat on WhatsApp, call, or visit our store</p>
           </TooltipContent>
         </Tooltip>
+        </TooltipProvider>
       </div>
 
       {copied && (
