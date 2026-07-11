@@ -229,14 +229,12 @@ export default function AboutPage() {
               Visit our store, chat on WhatsApp, or give us a call. We're here to help you find the perfect electronics.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="bg-white text-primary-600 hover:bg-primary-50 px-8 py-4" asChild>
-                <Link href="/contact">Visit Our Store</Link>
-              </Button>
-              <Button size="lg" variant="whatsapp" className="px-8 py-4" asChild>
-                <a href={getWhatsAppLink("91XXXXXXXXXX")} target="_blank" rel="noopener noreferrer">
-                  Chat on WhatsApp
-                </a>
-              </Button>
+              <Link href="/contact" className="btn-primary btn-lg">
+                Visit Our Store
+              </Link>
+              <a href={getWhatsAppLink("91XXXXXXXXXX")} target="_blank" rel="noopener noreferrer" className="btn-whatsapp btn-lg">
+                Chat on WhatsApp
+              </a>
             </div>
           </motion.div>
         </div>
