@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
@@ -42,9 +41,27 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, loading = false, disabled, children, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button"
+    if (asChild) {
+      // When asChild is true, we render the children directly with merged props
+      // using className approach instead of Slot (for React 19 compatibility)
+      const child = React.isValidElement(children) ? children : null
+      if (!child) {
+        throw new Error("Button asChild requires a single valid React element child")
+      }
+      const childClassName = cn(
+        buttonVariants({ variant, size }),
+        className,
+        (child.props as Record<string, string>)?.className
+      )
+      return React.cloneElement(child, {
+        ...props,
+        className: childClassName,
+        ref: ref,
+      } as React.Attributes & Record<string, unknown>)
+    }
+
     return (
-      <Comp
+      <button
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         disabled={disabled || loading}
@@ -75,7 +92,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </svg>
         )}
         {children}
-      </Comp>
+      </button>
     )
   }
 )
