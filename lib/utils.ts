@@ -25,6 +25,10 @@ export function formatPhoneNumber(phone: string): string {
   return phone
 }
 
+export function getWhatsAppMessage(productName: string): string {
+  return `Hello! I'm interested in ${productName}. Can you share the price and availability?`
+}
+
 export function getWhatsAppLink(phone: string, message?: string): string {
   const cleaned = phone.replace(/\D/g, "")
   const baseUrl = `https://wa.me/${cleaned.startsWith("91") ? cleaned : "91" + cleaned}`

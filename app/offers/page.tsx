@@ -57,7 +57,11 @@ export default function OffersPage() {
       <section className="py-12">
         <div className="container-custom">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {offers.map((offer, index) => (
+            {offers.map((offer, index) => {
+              const OfferIcon = offerIcons[offer.id as keyof typeof offerIcons]
+              const offerBg = offerBackgrounds[offer.id as keyof typeof offerBackgrounds]
+              const offerColor = offerColors[offer.id as keyof typeof offerColors]
+              return (
               <motion.div
                 key={offer.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -65,11 +69,11 @@ export default function OffersPage() {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: prefersReducedMotion ? 0 : index * 0.1 }}
               >
-                <Card className={cn("h-full group overflow-hidden", offerBackgrounds[offer.id as keyof typeof offerBackgrounds], offer.border)}>
+                <Card className={cn("h-full group overflow-hidden", offerBg, offer.border)}>
                   <div className="relative h-48 overflow-hidden">
-                    <div className={cn("absolute inset-0 bg-gradient-to-br", offerColors[offer.id as keyof typeof offerColors])} />
+                    <div className={cn("absolute inset-0 bg-gradient-to-br", offerColor)} />
                     <div className="absolute inset-0 flex items-center justify-center p-8 text-white">
-                      <offerIcons[offer.id as keyof typeof offerIcons] className="h-16 w-16 opacity-90" aria-hidden="true" />
+                      <OfferIcon className="h-16 w-16 opacity-90" aria-hidden="true" />
                     </div>
                     <Badge variant="accent" className="absolute top-4 left-4 z-10">{offer.badge}</Badge>
                   </div>
@@ -128,7 +132,7 @@ export default function OffersPage() {
                   </CardContent>
                 </Card>
               </motion.div>
-            ))}
+            )})}
           </div>
         </div>
       </section>

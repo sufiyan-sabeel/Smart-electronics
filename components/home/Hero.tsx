@@ -117,7 +117,7 @@ export function Hero() {
           >
             <div className="flex items-center gap-2">
               <Truck className="h-5 w-5 text-primary-600 dark:text-primary-400" aria-hidden="true" />
-              <span>Free Delivery >₹1999</span>
+              <span>Free Delivery {'>'}₹1999</span>
             </div>
             <div className="flex items-center gap-2">
               <Shield className="h-5 w-5 text-primary-600 dark:text-primary-400" aria-hidden="true" />

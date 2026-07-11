@@ -172,8 +172,7 @@
   }
 }
 
-@layer components {
-  .container-custom {
+.container-custom {
     @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
   }
 
@@ -193,28 +192,25 @@
     text-wrap: pretty;
   }
 
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
-  }
-
+  .btn,
   .btn-primary {
-    @apply btn bg-primary-600 text-white hover:bg-primary-700 hover:shadow-lg hover:-translate-y-0.5 focus-visible:ring-primary-500 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary-600 text-white hover:bg-primary-700 hover:shadow-lg hover:-translate-y-0.5 focus-visible:ring-primary-500 active:scale-[0.98];
   }
 
   .btn-secondary {
-    @apply btn bg-slate-100 text-slate-900 hover:bg-slate-200 hover:shadow-md focus-visible:ring-slate-400 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-slate-100 text-slate-900 hover:bg-slate-200 hover:shadow-md focus-visible:ring-slate-400 active:scale-[0.98];
   }
 
   .btn-outline {
-    @apply btn border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 focus-visible:ring-slate-400 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 focus-visible:ring-slate-400 active:scale-[0.98];
   }
 
   .btn-ghost {
-    @apply btn text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-slate-400 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-slate-400 active:scale-[0.98];
   }
 
   .btn-whatsapp {
-    @apply btn bg-whatsapp-500 text-white hover:bg-whatsapp-600 hover:shadow-lg hover:-translate-y-0.5 focus-visible:ring-whatsapp-500 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-whatsapp-500 text-white hover:bg-whatsapp-600 hover:shadow-lg hover:-translate-y-0.5 focus-visible:ring-whatsapp-500 active:scale-[0.98];
   }
 
   .btn-sm {
@@ -230,7 +226,7 @@
   }
 
   .card-hover {
-    @apply card hover:shadow-2xl hover:-translate-y-2;
+    @apply rounded-2xl bg-white border border-slate-200 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-slate-300;
   }
 
   .input {
@@ -241,24 +237,21 @@
     @apply block mb-2 text-sm font-medium text-slate-700;
   }
 
-  .badge {
-    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
-  }
-
+  .badge,
   .badge-primary {
-    @apply badge bg-primary-100 text-primary-800;
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-primary-100 text-primary-800;
   }
 
   .badge-secondary {
-    @apply badge bg-slate-100 text-slate-700;
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-slate-100 text-slate-700;
   }
 
   .badge-accent {
-    @apply badge bg-accent-100 text-accent-800;
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-accent-100 text-accent-800;
   }
 
   .badge-whatsapp {
-    @apply badge bg-whatsapp-100 text-whatsapp-800;
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-whatsapp-100 text-whatsapp-800;
   }
 
   .link-underline {
@@ -316,7 +309,6 @@
   .glass-dark {
     @apply bg-graphite-900/80 backdrop-blur-xl border border-graphite-700/50;
   }
-}
 
 @layer utilities {
   .animation-delay-100 { animation-delay: 100ms; }

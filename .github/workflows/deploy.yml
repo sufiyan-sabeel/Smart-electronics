@@ -33,6 +33,13 @@ jobs:
           set -o pipefail
           npm run build 2>&1 | tee build-log.txt
 
+      - name: Output build log to summary
+        if: failure()
+        run: |
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat build-log.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
       - name: Upload build log
         if: always()
         uses: actions/upload-artifact@v4

@@ -19,6 +19,7 @@ const offerIcons = {
 
 export function OfferCard({ offer, index }: { offer: typeof offers[0]; index: number }) {
   const offerProducts = offer.products.map(id => products.find(p => p.id === id)).filter(Boolean)
+  const OfferIcon = offerIcons[offer.id as keyof typeof offerIcons]
 
   return (
     <motion.div
@@ -35,7 +36,7 @@ export function OfferCard({ offer, index }: { offer: typeof offers[0]; index: nu
               <h3 className="text-xl font-bold text-graphite-900 dark:text-white">{offer.title}</h3>
             </div>
             <div className="p-3 rounded-xl bg-white/50 dark:bg-graphite-900/50 backdrop-blur">
-              <offerIcons[offer.id as keyof typeof offerIcons] className="h-8 w-8 text-primary-600 dark:text-primary-400" aria-hidden="true" />
+              <OfferIcon className="h-8 w-8 text-primary-600 dark:text-primary-400" aria-hidden="true" />
             </div>
           </div>
           

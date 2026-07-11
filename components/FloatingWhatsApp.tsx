@@ -1,3 +1,5 @@
+"use client"
+
 import { MessageSquare, Phone, MapPin, Mail, X, Clock, Copy, Check } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect, useRef } from "react"
