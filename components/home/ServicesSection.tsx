@@ -92,7 +92,7 @@ export function ServicesSection() {
           viewport={{ once: true, margin: "-100px" }}
           className="mt-10 text-center"
         >
-          <Button variant="primary" size="lg" asChild>
+          <Button size="lg" asChild>
             <Link href="/services">View All Services <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" /></Link>
           </Button>
         </motion.div>
