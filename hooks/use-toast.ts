@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useEffect, useCallback } from "react"
 
 export type Toast = {
   id: string
@@ -13,42 +13,48 @@ export type Toast = {
   }
 }
 
+// Global toast store (works outside React)
 let toastId = 0
-const toasts: Toast[] = []
-const listeners: Set<(toasts: Toast[]) => void> = new Set()
+let globalToasts: Toast[] = []
+const listeners = new Set<(toasts: Toast[]) => void>()
 
-function notify() {
-  listeners.forEach(listener => listener([...toasts]))
+function notifyListeners() {
+  const snapshot = [...globalToasts]
+  listeners.forEach((fn) => fn(snapshot))
 }
 
+/** Add a toast globally (can be called anywhere, not just React components) */
+export function toast(options: Omit<Toast, "id">): string {
+  const newToast: Toast = {
+    ...options,
+    id: `toast-${++toastId}`,
+  }
+  globalToasts = [...globalToasts, newToast]
+  notifyListeners()
+  return newToast.id
+}
+
+/** Dismiss a toast by ID */
+export function dismissToast(id: string) {
+  globalToasts = globalToasts.filter((t) => t.id !== id)
+  notifyListeners()
+}
+
+/** React hook to subscribe to toast state */
 export function useToast() {
-  const [state, setState] = useState<Toast[]>(toasts)
+  const [toasts, setToasts] = useState<Toast[]>(globalToasts)
 
-  const addToast = useCallback((toast: Omit<Toast, "id">) => {
-    const newToast: Toast = {
-      ...toast,
-      id: `toast-${++toastId}`,
-    }
-    toasts.push(newToast)
-    notify()
-    return newToast.id
-  }, [])
-
-  const dismissToast = useCallback((id: string) => {
-    const index = toasts.findIndex(t => t.id === id)
-    if (index > -1) {
-      toasts.splice(index, 1)
-      notify()
+  useEffect(() => {
+    const handler = (snapshot: Toast[]) => setToasts(snapshot)
+    listeners.add(handler)
+    return () => {
+      listeners.delete(handler)
     }
   }, [])
 
   return {
-    toasts: state,
-    toast: addToast,
+    toasts,
+    toast,
     dismiss: dismissToast,
   }
-}
-
-export function toast(options: Omit<Toast, "id">) {
-  return useToast().toast(options)
 }

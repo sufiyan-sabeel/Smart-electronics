@@ -35,7 +35,7 @@ const generateSitemap = () => {
 ${urls.join('\n')}
 </urlset>`
 
-  const publicDir = path.join(__dirname, 'public')
+  const publicDir = path.join(__dirname, '..', 'public')
   if (!fs.existsSync(publicDir)) {
     fs.mkdirSync(publicDir, { recursive: true })
   }
