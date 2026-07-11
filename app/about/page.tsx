@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { businessInfo } from "@/lib/business-info"
-import { Shield, Award, Users, Heart, Truck, MessageSquare, MapPin, Clock, Star, CheckCircle, Building2 } from "lucide-react"
+import { Shield, Award, Users, Heart, Truck, MessageSquare, MapPin, Clock, Star, CheckCircle, Building2, ShieldCheck } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { prefersReducedMotion } from "@/hooks/use-reduced-motion"
