@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="200" height="80">
+  <defs>
+    <linearGradient id="samsungGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0066D1"/>
+      <stop offset="100%" style="stop-color:#004999"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="80" fill="white"/>
+  <text x="100" y="52" font-family="Arial, sans-serif" font-size="42" font-weight="bold" fill="url(#samsungGradient)" text-anchor="middle">SAMSUNG</text>
+</svg>

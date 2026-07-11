@@ -1,0 +1,13 @@
+# Robots.txt for Smart Electronics
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://smartelectronics.demo/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /*.json$
+Disallow: /*.xml$
