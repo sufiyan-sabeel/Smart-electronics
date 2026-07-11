@@ -266,28 +266,24 @@
     @apply mt-4 text-lg sm:text-xl text-slate-600 max-w-2xl;
   }
 
-  .grid-responsive {
-    @apply grid gap-6 sm:gap-8;
-  }
-
   .grid-2 {
-    @apply grid-responsive grid-cols-1 sm:grid-cols-2;
+    @apply grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2;
   }
 
   .grid-3 {
-    @apply grid-responsive grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
+    @apply grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
   }
 
   .grid-4 {
-    @apply grid-responsive grid-cols-1 sm:grid-cols-2 lg:grid-cols-4;
+    @apply grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4;
   }
 
   .grid-5 {
-    @apply grid-responsive grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5;
+    @apply grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5;
   }
 
   .grid-6 {
-    @apply grid-responsive grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6;
+    @apply grid gap-6 sm:gap-8 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6;
   }
 
   .gradient-text {
