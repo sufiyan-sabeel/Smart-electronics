@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { brands } from "@/lib/data"
 import { ArrowRight } from "lucide-react"
 import { prefersReducedMotion } from "@/hooks/use-reduced-motion"
+import { getAssetUrl } from "@/lib/utils"
 
 export function BrandCard({ brand, index }: { brand: typeof brands[0]; index: number }) {
   return (
@@ -25,7 +26,7 @@ export function BrandCard({ brand, index }: { brand: typeof brands[0]; index: nu
           <CardContent className="p-6 h-full flex items-center justify-center">
             <div className="relative w-full max-w-xs h-16 sm:h-20 flex items-center justify-center">
               <Image
-                src={brand.logo}
+                src={getAssetUrl(brand.logo)}
                 alt={`${brand.name} logo`}
                 fill
                 className="object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"

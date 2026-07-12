@@ -8,6 +8,7 @@ import { ArrowRight } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { prefersReducedMotion } from "@/hooks/use-reduced-motion"
+import { getAssetUrl } from "@/lib/utils"
 
 export default function BrandsPage() {
   return (
@@ -51,7 +52,7 @@ export default function BrandsPage() {
                     <CardContent className="p-6 h-full flex items-center justify-center">
                       <div className="relative w-full max-w-xs aspect-square flex items-center justify-center bg-slate-50 dark:bg-graphite-800 rounded-xl group-hover:bg-primary-50 dark:group-hover:bg-primary-900/20 transition-colors">
                         <Image
-                          src={brand.logo}
+                          src={getAssetUrl(brand.logo)}
                           alt={`${brand.name} logo`}
                           width={120}
                           height={60}
@@ -88,7 +89,7 @@ export default function BrandsPage() {
                   <div className="relative aspect-video bg-gradient-to-br from-primary-50 to-whatsapp-50 dark:from-primary-900/20 dark:to-whatsapp-900/20">
                     <div className="absolute inset-0 flex items-center justify-center p-8">
                       <Image
-                        src={brand.logo}
+                        src={getAssetUrl(brand.logo)}
                         alt={`${brand.name} logo`}
                         width={200}
                         height={100}

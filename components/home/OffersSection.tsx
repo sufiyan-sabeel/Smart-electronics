@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { offers, products } from "@/lib/data"
 import { prefersReducedMotion } from "@/hooks/use-reduced-motion"
-import { cn } from "@/lib/utils"
+import { cn, getAssetUrl } from "@/lib/utils"
 
 const offerIcons = {
   "weekly-deals": Tag,
@@ -51,7 +51,7 @@ export function OfferCard({ offer, index }: { offer: typeof offers[0]; index: nu
               >
                 <div className="relative h-12 w-12 rounded-lg overflow-hidden bg-slate-100 dark:bg-graphite-800 flex-shrink-0">
                   <img
-                    src={product!.image}
+                    src={getAssetUrl(product!.image)}
                     alt={product!.name}
                     className="object-cover h-full w-full transition-transform duration-300 group-hover:scale-105"
                     loading="lazy"

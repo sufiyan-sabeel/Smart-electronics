@@ -63,6 +63,20 @@ export function getInitials(name: string): string {
     .slice(0, 2)
 }
 
+export const BASE_PATH = typeof process !== "undefined" ? (process.env.NEXT_PUBLIC_BASE_PATH || "") : ""
+
+/**
+ * Prepend the base path (e.g. /Smart-electronics) to asset URLs
+ * so images/brand logos/avatars load correctly on GitHub Pages subpath.
+ */
+export function getAssetUrl(path: string): string {
+  if (!path || !BASE_PATH) return path
+  if (path.startsWith("/")) {
+    return `${BASE_PATH}${path}`
+  }
+  return path
+}
+
 export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number

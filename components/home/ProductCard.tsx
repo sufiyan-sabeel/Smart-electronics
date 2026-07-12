@@ -8,7 +8,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Product } from "@/lib/data"
-import { formatPrice, getWhatsAppLink, getWhatsAppMessage } from "@/lib/utils"
+import { formatPrice, getWhatsAppLink, getWhatsAppMessage, getAssetUrl } from "@/lib/utils"
 import { cn } from "@/lib/utils"
 
 interface ProductCardProps {
@@ -42,7 +42,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 dark:from-graphite-800 dark:to-graphite-900">
           <Link href={`/products/${product.id}`} aria-label={`View ${product.name} details`}>
             <Image
-              src={product.image}
+              src={getAssetUrl(product.image)}
               alt={product.name}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-110"

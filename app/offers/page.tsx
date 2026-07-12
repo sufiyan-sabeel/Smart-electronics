@@ -8,7 +8,7 @@ import { Tag, Sparkles, RotateCcw, GraduationCap, ArrowRight, Clock, Star, Shopp
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { formatPrice, getWhatsAppLink } from "@/lib/utils"
+import { formatPrice, getWhatsAppLink, getAssetUrl } from "@/lib/utils"
 import { prefersReducedMotion } from "@/hooks/use-reduced-motion"
 import { cn } from "@/lib/utils"
 
@@ -96,7 +96,7 @@ export default function OffersPage() {
                           >
                             <div className="relative h-12 w-12 rounded-lg overflow-hidden bg-slate-100 dark:bg-graphite-800 flex-shrink-0">
                               <Image
-                                src={product.image}
+                                src={getAssetUrl(product.image)}
                                 alt={product.name}
                                 fill
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
