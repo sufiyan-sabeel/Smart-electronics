@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="200" height="80">
-  <rect width="200" height="80" fill="white"/>
-  <text x="100" y="52" font-family="Arial, sans-serif" font-size="38" font-weight="bold" fill="#0066CC" text-anchor="middle">OPPO</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="200" height="100">
+  <rect width="200" height="100" fill="white" rx="12"/>
+  <rect x="1" y="1" width="198" height="98" rx="11" fill="none" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="100" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="800" fill="#1DA64A" text-anchor="middle" dominant-baseline="central">OPPO</text>
 </svg>
