@@ -303,7 +303,7 @@ export function Hero() {
                 <span className={`h-2 w-2 rounded-full transition-colors ${
                   powerState === "on" ? "bg-emerald-400 animate-pulse" :
                   powerState === "booting" ? "bg-amber-400 animate-pulse" :
-                  "bg-slate-300 dark:bg-graphette-600"
+                  "bg-slate-300 dark:bg-graphite-600"
                 }`} />
               </button>
 
