@@ -12,37 +12,35 @@ interface ThemeContextValue {
   setTheme: (theme: Theme) => void
 }
 
-const ThemeContext = React.createContext<ThemeContextValue | undefined>(undefined)
+const defaultContext: ThemeContextValue = {
+  theme: "light",
+  resolvedTheme: "light",
+  setTheme: () => {},
+}
+
+const ThemeContext = React.createContext<ThemeContextValue>(defaultContext)
 
 export function useTheme(): ThemeContextValue {
-  const context = React.useContext(ThemeContext)
-  if (!context) {
-    throw new Error("useTheme must be used within a ThemeProvider")
-  }
-  return context
+  return React.useContext(ThemeContext)
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = React.useState<Theme>("system")
+  const [theme, setThemeState] = React.useState<Theme>("light")
   const [resolvedTheme, setResolvedTheme] = React.useState<"light" | "dark">("light")
   const [mounted, setMounted] = React.useState(false)
 
   // Load saved theme on mount
   React.useEffect(() => {
     const saved = localStorage.getItem("theme") as Theme | null
-    if (saved) {
-      setThemeState(saved)
-    }
+    setThemeState(saved || "system")
     setMounted(true)
   }, [])
 
-  // Resolve "system" to light/dark
+  // Resolve "system" to light/dark, apply class
   React.useEffect(() => {
-    if (!mounted) return
-
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
 
-    const resolve = () => {
+    const applyTheme = () => {
       let resolved: "light" | "dark"
       if (theme === "system") {
         resolved = mediaQuery.matches ? "dark" : "light"
@@ -50,8 +48,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         resolved = theme
       }
       setResolvedTheme(resolved)
-
-      // Apply class to html element for Tailwind dark mode
+      
       if (resolved === "dark") {
         document.documentElement.classList.add("dark")
       } else {
@@ -59,23 +56,23 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
-    resolve()
-    mediaQuery.addEventListener("change", resolve)
-    return () => mediaQuery.removeEventListener("change", resolve)
-  }, [theme, mounted])
+    applyTheme()
+    mediaQuery.addEventListener("change", applyTheme)
+    return () => mediaQuery.removeEventListener("change", applyTheme)
+  }, [theme])
 
   const setTheme = React.useCallback((newTheme: Theme) => {
     setThemeState(newTheme)
     localStorage.setItem("theme", newTheme)
   }, [])
 
-  // Prevent hydration flash
-  if (!mounted) {
-    return <>{children}</>
-  }
+  const value = React.useMemo(
+    () => ({ theme, resolvedTheme, setTheme }),
+    [theme, resolvedTheme, setTheme]
+  )
 
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   )
