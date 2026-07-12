@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion } from "framer-motion"
 import Link from "next/link"
 import { useState, useCallback } from "react"
 import {
@@ -17,11 +17,6 @@ import {
   Award,
   Star,
   Zap,
-  Monitor,
-  Tablet,
-  Volume2,
-  Activity,
-  Cpu,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -35,25 +30,20 @@ const trustItems = [
   { icon: Star, text: "98% Customer Satisfaction" },
 ]
 
-// Floating background icons (feature 7)
+// Feature 7: Subtle floating background icons (reduced to 4 for performance)
 const floatingIcons = [
-  { Icon: Smartphone, x: "15%", y: "20%", size: 28, delay: 0, duration: 8 },
-  { Icon: Headphones, x: "85%", y: "15%", size: 24, delay: 0.5, duration: 10 },
-  { Icon: Monitor, x: "75%", y: "70%", size: 32, delay: 1, duration: 9 },
-  { Icon: Zap, x: "10%", y: "75%", size: 20, delay: 1.5, duration: 7 },
-  { Icon: Watch, x: "90%", y: "50%", size: 22, delay: 2, duration: 11 },
-  { Icon: Cpu, x: "50%", y: "10%", size: 18, delay: 2.5, duration: 9 },
-  { Icon: Tablet, x: "20%", y: "50%", size: 26, delay: 3, duration: 8 },
-  { Icon: Volume2, x: "60%", y: "80%", size: 20, delay: 3.5, duration: 10 },
+  { Icon: Smartphone, x: "12%", y: "18%", size: 24, duration: 10 },
+  { Icon: Monitor, x: "78%", y: "72%", size: 28, duration: 12 },
+  { Icon: Zap, x: "8%", y: "78%", size: 18, duration: 9 },
+  { Icon: Watch, x: "88%", y: "48%", size: 20, duration: 11 },
 ]
 
-// Floating product entrance silhouettes (feature 1)
+// Feature 1: Product entrance silhouettes — 4 icons, tighter springs, no infinite floating
 const entranceDevices = [
-  { Icon: Smartphone, label: "Smartphone", x: 0.12, y: 0.25, delay: 0.6, rotate: -8 },
-  { Icon: Laptop, label: "Laptop", x: 0.82, y: 0.35, delay: 0.9, rotate: 5 },
-  { Icon: Watch, label: "Watch", x: 0.88, y: 0.12, delay: 1.2, rotate: 12 },
-  { Icon: Headphones, label: "Headphones", x: 0.08, y: 0.55, delay: 0.7, rotate: -5 },
-  { Icon: Tablet, label: "Tablet", x: 0.16, y: 0.38, delay: 1.0, rotate: -3 },
+  { Icon: Smartphone, label: "Smartphone", x: 0.10, y: 0.28, delay: 0.3, rotate: -6 },
+  { Icon: Laptop, label: "Laptop", x: 0.87, y: 0.38, delay: 0.45, rotate: 4 },
+  { Icon: Watch, label: "Watch", x: 0.92, y: 0.12, delay: 0.6, rotate: 8 },
+  { Icon: Headphones, label: "Headphones", x: 0.05, y: 0.60, delay: 0.35, rotate: -4 },
 ]
 
 export function Hero() {
@@ -63,31 +53,27 @@ export function Hero() {
     "Hello! I'd like to know more about your products and services."
   )
 
-  // Power On showcase (feature 6)
+  // Feature 6: Power On showcase
   const [powerState, setPowerState] = useState<"off" | "booting" | "on">("off")
 
   const handlePowerOn = useCallback(() => {
     if (powerState === "off") {
       setPowerState("booting")
-      setTimeout(() => setPowerState("on"), 2500)
+      setTimeout(() => setPowerState("on"), 1500)
     } else {
       setPowerState("off")
     }
   }, [powerState])
-
-  // Scroll parallax
-  const { scrollY } = useScroll()
-  const heroParallax = useTransform(scrollY, [0, 500], [0, -40])
 
   return (
     <section
       className="relative min-h-[90vh] flex items-center overflow-hidden bg-white dark:bg-graphite-900"
       aria-labelledby="hero-heading"
     >
-      {/* Background gradient */}
+      {/* Background gradients (pure CSS, no JS animation) */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--color-primary-50)_0%,_transparent_50%),radial-gradient(ellipse_at_bottom_left,_var(--color-accent-50)_0%,_transparent_50%)] dark:bg-[radial-gradient(ellipse_at_top_right,_var(--color-primary-900/20)_0%,_transparent_50%),radial-gradient(ellipse_at_bottom_left,_var(--color-accent-900/10)_0%,_transparent_50%)]" aria-hidden="true" />
 
-      {/* Subtle grid overlay */}
+      {/* Subtle grid overlay (CSS only) */}
       <div
         className="absolute inset-0 opacity-[0.02] dark:opacity-[0.04]"
         style={{
@@ -96,103 +82,74 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      {/* Feature 7: Floating background icons */}
+      {/* Feature 7: Floating background icons — only 4, very subtle, CSS-based, no GPU thrash */}
       {!prefersReducedMotion && (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden hidden sm:block" aria-hidden="true">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden hidden lg:block" aria-hidden="true">
           {floatingIcons.map((item, i) => (
-            <motion.div
+            <div
               key={i}
-              className="absolute text-primary-400/15 dark:text-primary-500/20"
-              style={{ left: item.x, top: item.y }}
-              animate={{
-                y: [0, -15, 0, 10, 0],
-                rotate: [0, 5, -3, 2, 0],
-              }}
-              transition={{
-                duration: item.duration,
-                delay: item.delay,
-                repeat: Infinity,
-                ease: "easeInOut",
+              className={`absolute text-primary-400/10 dark:text-primary-500/15 hero-float-${i}`}
+              style={{
+                left: item.x,
+                top: item.y,
+                animation: `hero-float-${i} ${item.duration}s ease-in-out infinite`,
+                willChange: "transform",
               }}
             >
               <item.Icon size={item.size} />
-            </motion.div>
+            </div>
           ))}
         </div>
       )}
 
-      {/* Feature 1: Floating product entrance silhouettes */}
+      {/* Feature 1: Entrance silhouettes — spring entry only, no infinite float */}
       {!prefersReducedMotion && (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden hidden md:block" aria-hidden="true">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden hidden lg:block" aria-hidden="true">
           {entranceDevices.map((device, i) => (
             <motion.div
               key={i}
-              className="absolute"
+              className="absolute will-change-transform"
               style={{ left: `${device.x * 100}%`, top: `${device.y * 100}%` }}
-              initial={{ 
-                opacity: 0, 
-                x: device.x < 0.5 ? -80 : 80, 
-                y: 40,
-                rotate: device.rotate,
-                scale: 0.6,
-              }}
-              animate={{ 
-                opacity: 1, 
-                x: 0, 
-                y: 0,
-                rotate: device.rotate,
-                scale: 1,
-              }}
+              initial={{ opacity: 0, x: device.x < 0.5 ? -60 : 60, y: 30, rotate: device.rotate, scale: 0.7 }}
+              animate={{ opacity: 1, x: 0, y: 0, rotate: device.rotate, scale: 1 }}
               transition={{
                 type: "spring",
-                stiffness: 60,
-                damping: 12,
+                stiffness: 180,
+                damping: 22,
                 delay: device.delay,
-                mass: 1.2,
+                mass: 0.8,
               }}
             >
               <div className="relative">
-                <motion.div
-                  animate={{
-                    y: [0, -6, 0],
-                  }}
-                  transition={{
-                    duration: 4 + i * 0.5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: i * 0.3,
-                  }}
-                >
-                  <div className="p-3 rounded-2xl bg-white/80 dark:bg-graphite-800/80 backdrop-blur-sm shadow-lg border border-slate-200/60 dark:border-graphite-700/60">
-                    <device.Icon className="h-8 w-8 text-primary-500 dark:text-primary-400" />
-                  </div>
-                </motion.div>
-                {/* Glow dot */}
-                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1.5 w-1.5 rounded-full bg-primary-400/50 blur-sm" />
+                <div className="p-2.5 rounded-xl bg-white/85 dark:bg-graphite-800/85 backdrop-blur-sm shadow-md border border-slate-200/50 dark:border-graphite-700/50">
+                  <device.Icon className="h-7 w-7 text-primary-500 dark:text-primary-400" />
+                </div>
+                {/* Subtle glow dot — no animation */}
+                <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-primary-400/40" />
               </div>
             </motion.div>
           ))}
         </div>
       )}
 
-      {/* Decorative gradient orbs */}
+      {/* Decorative gradient orbs (pure CSS, no animation) */}
       <div className="absolute top-1/3 -left-48 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl" aria-hidden="true" />
       <div className="absolute bottom-1/4 -right-48 w-[500px] h-[500px] bg-accent-400/10 rounded-full blur-3xl" aria-hidden="true" />
 
-      <motion.div className="container-custom relative z-10 py-20 lg:py-28" style={{ y: heroParallax }}>
+      <div className="container-custom relative z-10 py-20 lg:py-28">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left: Text Content */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.8, ease: "easeOut" }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: "easeOut" }}
           >
             {/* Badge */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-sm font-medium border border-primary-200 dark:border-primary-800 mb-6"
+              transition={{ duration: prefersReducedMotion ? 0 : 0.4, delay: 0.15 }}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-sm font-medium border border-primary-200 dark:border-primary-800 mb-6"
             >
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75" />
@@ -204,9 +161,9 @@ export function Hero() {
             {/* Headline */}
             <motion.h1
               id="hero-heading"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.3 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: 0.2 }}
               className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-graphite-900 dark:text-white leading-[1.1]"
             >
               <span className="block">Latest Electronics.</span>
@@ -217,10 +174,10 @@ export function Hero() {
 
             {/* Description */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.4 }}
-              className="mt-6 text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed"
+              transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: 0.3 }}
+              className="mt-5 text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed"
             >
               Explore smartphones, laptops, accessories, smart devices, and reliable repair services —
               all with the personal touch of a local business that truly cares.
@@ -228,9 +185,9 @@ export function Hero() {
 
             {/* CTA Buttons */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.5 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: 0.4 }}
               className="mt-8 flex flex-col sm:flex-row items-start gap-3"
             >
               <Button
@@ -256,11 +213,11 @@ export function Hero() {
               </Button>
             </motion.div>
 
-            {/* Feature 6: Power On Showcase */}
+            {/* Feature 6: Power On Showcase — cleaner, faster boot */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: prefersReducedMotion ? 0 : 0.8 }}
+              transition={{ delay: prefersReducedMotion ? 0 : 0.6 }}
               className="mt-6"
             >
               <button
@@ -274,15 +231,15 @@ export function Hero() {
                     powerState === "booting"
                       ? { rotate: [0, 360] }
                       : powerState === "on"
-                      ? { scale: [1, 1.2, 1] }
+                      ? { scale: [1, 1.15, 1] }
                       : {}
                   }
                   transition={
                     powerState === "booting"
-                      ? { duration: 1, repeat: Infinity, ease: "linear" }
-                      : { duration: 0.4 }
+                      ? { duration: 0.8, repeat: 2, ease: "linear" }
+                      : { duration: 0.3 }
                   }
-                  className={`p-1.5 rounded-lg ${
+                  className={`p-1.5 rounded-lg transition-colors ${
                     powerState === "on"
                       ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
                       : powerState === "booting"
@@ -294,72 +251,51 @@ export function Hero() {
                 </motion.div>
 
                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                  {powerState === "off" && "Power On Device Showcase"}
-                  {powerState === "booting" && "Powering up..."}
-                  {powerState === "on" && "Device is On — Tap to power off"}
+                  {powerState === "off" && "Launch Device Preview"}
+                  {powerState === "booting" && "Starting up..."}
+                  {powerState === "on" && "Device ready — tap to close"}
                 </span>
 
-                {/* Live indicator */}
-                <span className={`h-2 w-2 rounded-full transition-colors ${
-                  powerState === "on" ? "bg-emerald-400 animate-pulse" :
-                  powerState === "booting" ? "bg-amber-400 animate-pulse" :
-                  "bg-slate-300 dark:bg-graphite-600"
-                }`} />
+                <span
+                  className={`h-2 w-2 rounded-full transition-colors ${
+                    powerState === "on" ? "bg-emerald-400 animate-pulse" : powerState === "booting" ? "bg-amber-400 animate-pulse" : "bg-slate-300 dark:bg-graphite-600"
+                  }`}
+                />
               </button>
 
-              {/* Phone boot animation */}
+              {/* Phone boot animation — only animates when visible */}
               {powerState !== "off" && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.25 }}
                   className="mt-4 overflow-hidden"
                 >
                   <Card className="border-slate-200 dark:border-graphite-700 shadow-md overflow-hidden max-w-sm">
-                    <div className="relative bg-gradient-to-b from-graphite-900 to-graphite-800 p-6">
-                      {/* Phone frame */}
-                      <div className="mx-auto w-48 h-[320px] rounded-[28px] bg-black border-2 border-graphite-600 relative overflow-hidden shadow-2xl">
-                        {/* Screen */}
-                        <div className="absolute inset-[3px] rounded-[25px] bg-gradient-to-b from-primary-900/80 to-graphite-900 overflow-hidden">
+                    <div className="relative bg-gradient-to-b from-graphite-900 to-graphite-800 p-5">
+                      <div className="mx-auto w-44 h-[290px] rounded-[24px] bg-black border-2 border-graphite-600 relative overflow-hidden shadow-2xl">
+                        <div className="absolute inset-[3px] rounded-[21px] bg-gradient-to-b from-primary-900/80 to-graphite-900 overflow-hidden">
                           {/* Notch */}
-                          <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-full z-10" />
-                          
-                          {/* Boot animation content */}
+                          <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-16 h-4 bg-black rounded-full z-10" />
+
                           {powerState === "booting" ? (
-                            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+                            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
                               <motion.div
-                                animate={{ scale: [0.8, 1.2, 0.8], opacity: [0.3, 1, 0.3] }}
-                                transition={{ duration: 1.5, repeat: Infinity }}
+                                animate={{ scale: [0.85, 1.15, 0.85], opacity: [0.4, 1, 0.4] }}
+                                transition={{ duration: 1.2, repeat: Infinity }}
                               >
-                                <Smartphone className="h-10 w-10 text-primary-400" />
+                                <Smartphone className="h-8 w-8 text-primary-400" />
                               </motion.div>
-                              <div className="w-3/4 space-y-2">
-                                <motion.div
-                                  className="h-1 rounded-full bg-primary-500/30 overflow-hidden"
-                                >
+                              <div className="w-3/4 space-y-1.5">
+                                <div className="h-1 rounded-full bg-primary-500/30 overflow-hidden">
                                   <motion.div
                                     className="h-full bg-gradient-to-r from-primary-500 to-blue-400 rounded-full"
                                     animate={{ x: ["-100%", "100%"] }}
-                                    transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                                    transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
                                   />
-                                </motion.div>
-                                <motion.div
-                                  className="h-0.5 rounded-full bg-primary-400/20 overflow-hidden"
-                                >
-                                  <motion.div
-                                    className="h-full bg-gradient-to-r from-primary-400 to-accent-400 rounded-full w-1/2"
-                                    animate={{ x: ["-50%", "150%"] }}
-                                    transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-                                  />
-                                </motion.div>
-                                <motion.p
-                                  animate={{ opacity: [0.4, 1, 0.4] }}
-                                  transition={{ duration: 1, repeat: Infinity }}
-                                  className="text-[10px] text-center text-primary-300/70 font-mono mt-2"
-                                >
-                                  Initializing...
-                                </motion.p>
+                                </div>
+                                <p className="text-[9px] text-center text-primary-300/60 font-mono">Loading...</p>
                               </div>
                             </div>
                           ) : (
@@ -371,32 +307,24 @@ export function Hero() {
                               <motion.div
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
-                                transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                                transition={{ type: "spring", stiffness: 250, damping: 18 }}
                               >
-                                <Smartphone className="h-8 w-8 text-emerald-400" />
+                                <Smartphone className="h-7 w-7 text-emerald-400" />
                               </motion.div>
                               <motion.p
-                                initial={{ y: 10, opacity: 0 }}
+                                initial={{ y: 8, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
-                                transition={{ delay: 0.2 }}
-                                className="text-xs font-medium text-emerald-400"
+                                transition={{ delay: 0.15 }}
+                                className="text-[11px] font-medium text-emerald-400"
                               >
                                 Ready to connect.
                               </motion.p>
-                              <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: "60%" }}
-                                transition={{ duration: 0.5, delay: 0.3 }}
-                                className="h-0.5 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full mt-2"
-                              />
                             </motion.div>
                           )}
                         </div>
                       </div>
-
-                      {/* Label */}
-                      <p className="text-center text-xs text-slate-400 mt-4 font-mono">
-                        {powerState === "booting" ? "Booting Smart Electronics OS..." : "Smart Electronics OS v3.1"}
+                      <p className="text-center text-[10px] text-slate-500 mt-3 font-mono">
+                        {powerState === "booting" ? "Booting..." : "Smart Electronics OS v3.1"}
                       </p>
                     </div>
                   </Card>
@@ -408,17 +336,17 @@ export function Hero() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: powerState === "off" ? 0.7 : 1.2 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: powerState === "off" ? 0.7 : 1.0 }}
               className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3"
             >
               {trustItems.map((item, index) => (
                 <motion.div
                   key={item.text}
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
-                    duration: prefersReducedMotion ? 0 : 0.4,
-                    delay: prefersReducedMotion ? 0 : (powerState === "off" ? 0.7 : 1.2) + index * 0.1,
+                    duration: prefersReducedMotion ? 0 : 0.35,
+                    delay: prefersReducedMotion ? 0 : (powerState === "off" ? 0.7 : 1.0) + index * 0.07,
                   }}
                   className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-white/70 dark:bg-graphite-800/70 backdrop-blur border border-slate-200/60 dark:border-graphite-700/60"
                 >
@@ -432,7 +360,7 @@ export function Hero() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: powerState === "off" ? 1.0 : 1.5 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: powerState === "off" ? 0.9 : 1.2 }}
               className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-slate-500 dark:text-slate-400"
             >
               <div className="flex items-center gap-1.5">
@@ -448,92 +376,77 @@ export function Hero() {
 
           {/* Right: Product Showcase */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.8, delay: 0.3 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.7, delay: 0.2 }}
             className="hidden lg:block relative"
           >
             <div className="relative">
-              {/* Glow effect behind featured product (feature 1) */}
+              {/* Glow behind showcase */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: prefersReducedMotion ? 0 : 1, delay: 0.5 }}
-                className="absolute -top-20 left-1/2 -translate-x-1/2 w-96 h-96 bg-gradient-to-br from-primary-400/20 via-primary-300/10 to-blue-400/20 rounded-full blur-3xl"
+                transition={{ duration: prefersReducedMotion ? 0 : 0.8, delay: 0.3 }}
+                className="absolute -top-20 left-1/2 -translate-x-1/2 w-80 h-80 bg-gradient-to-br from-primary-400/15 via-primary-300/8 to-blue-400/15 rounded-full blur-3xl"
                 aria-hidden="true"
               />
 
-              {/* Product showcase grid */}
               <div className="relative grid grid-cols-2 gap-4">
                 {[
-                  { Icon: Smartphone, title: "Smartphones", desc: "Latest flagships &amp; budget picks", delay: 0.5 },
-                  { Icon: Laptop, title: "Laptops", desc: "Work, study &amp; gaming machines", delay: 0.6, offset: "mt-8" },
-                  { Icon: Watch, title: "Smart Watches", desc: "Track your fitness &amp; stay connected", delay: 0.7, offset: "-mt-4" },
-                  { Icon: Headphones, title: "Audio &amp; Accessories", desc: "Earbuds, speakers &amp; more", delay: 0.8, offset: "mt-4" },
+                  { icon: Smartphone, title: "Smartphones", desc: "Latest flagships & budget picks", delay: 0.35 },
+                  { icon: Laptop, title: "Laptops", desc: "Work, study & gaming machines", delay: 0.45, cls: "mt-8" },
+                  { icon: Watch, title: "Smart Watches", desc: "Fitness & connectivity", delay: 0.55, cls: "-mt-4" },
+                  { icon: Headphones, title: "Audio & Accessories", desc: "Earbuds, speakers & more", delay: 0.65, cls: "mt-4" },
                 ].map((item, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 80,
-                      damping: 15,
-                      delay: prefersReducedMotion ? 0 : item.delay,
-                    }}
-                    className={item.offset || ""}
+                    transition={{ type: "spring", stiffness: 120, damping: 18, delay: prefersReducedMotion ? 0 : item.delay }}
+                    className={item.cls || ""}
                   >
                     <Card className="border-slate-200 dark:border-graphite-700 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                      <CardContent className="p-5">
+                      <CardContent className="p-4">
                         <div className="aspect-square rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-graphite-800 dark:to-graphite-700 flex items-center justify-center mb-3">
-                          <item.Icon className="h-16 w-16 text-primary-500 dark:text-primary-400" aria-hidden="true" />
+                          <item.icon className="h-14 w-14 text-primary-500 dark:text-primary-400" aria-hidden="true" />
                         </div>
                         <h4 className="font-semibold text-graphite-900 dark:text-white text-sm">{item.title}</h4>
-                        <p className="text-xs text-slate-500 dark:text-slate-400" dangerouslySetInnerHTML={{ __html: item.desc }} />
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{item.desc}</p>
                       </CardContent>
                     </Card>
                   </motion.div>
                 ))}
               </div>
 
-              {/* Floating product count badge */}
+              {/* Floating badge */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 0.85 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 200,
-                  damping: 15,
-                  delay: prefersReducedMotion ? 0 : 1.2,
-                }}
-                className="absolute -bottom-4 -left-4 bg-white dark:bg-graphite-800 rounded-2xl shadow-xl border border-slate-200 dark:border-graphite-700 px-5 py-3"
+                transition={{ type: "spring", stiffness: 200, damping: 18, delay: prefersReducedMotion ? 0 : 0.9 }}
+                className="absolute -bottom-3 -left-4 bg-white dark:bg-graphite-800 rounded-xl shadow-lg border border-slate-200 dark:border-graphite-700 px-4 py-2.5"
               >
-                <p className="text-xs text-slate-500 dark:text-slate-400">From top brands</p>
-                <p className="text-lg font-bold text-primary-600 dark:text-primary-400">500+ Products</p>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">From top brands</p>
+                <p className="text-base font-bold text-primary-600 dark:text-primary-400">500+ Products</p>
               </motion.div>
             </div>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator (one-shot fade, no infinite loop) */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: prefersReducedMotion ? 0 : 1.5 }}
+        transition={{ delay: prefersReducedMotion ? 0 : 1.2, duration: 0.6 }}
         className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden sm:block"
         aria-hidden="true"
       >
-        <motion.div
-          animate={{ y: prefersReducedMotion ? 0 : [0, 6, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500"
-        >
+        <div className="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500">
           <span className="text-xs font-medium">Scroll to explore</span>
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
-        </motion.div>
+        </div>
       </motion.div>
     </section>
   )

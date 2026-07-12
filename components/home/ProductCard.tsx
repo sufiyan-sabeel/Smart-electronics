@@ -31,11 +31,11 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0
 
-  // Mouse position for tilt effect (feature 2)
+  // Mouse position for tilt effect (feature 2) — ±5° for satisfying feel
   const x = useMotionValue(0)
   const y = useMotionValue(0)
-  const rotateX = useTransform(y, [-0.5, 0.5], [3, -3])
-  const rotateY = useTransform(x, [-0.5, 0.5], [-3, 3])
+  const rotateX = useTransform(y, [-0.5, 0.5], [5, -5])
+  const rotateY = useTransform(x, [-0.5, 0.5], [-5, 5])
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!cardRef.current || prefersReducedMotion) return
@@ -63,15 +63,16 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
       style={prefersReducedMotion ? {} : { perspective: 1000, rotateX, rotateY }}
+      className="will-change-transform"
     >
       <Card className={cn(
         "group h-full flex flex-col border-slate-200 dark:border-graphite-700 overflow-hidden",
-        "transition-all duration-300 relative",
+        "relative",
         isHovered 
-          ? "border-primary-300 dark:border-primary-700 shadow-xl -translate-y-1" 
-          : "hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-xl hover:-translate-y-1"
+          ? "border-primary-300 dark:border-primary-700 shadow-xl" 
+          : "hover:border-primary-300 dark:hover:border-primary-700"
       )}>
-        {/* Shine sweep overlay (feature 2) */}
+        {/* Shine sweep overlay (feature 2) — uses transform instead of layout property */}
         <motion.div
           className="absolute inset-0 z-20 pointer-events-none overflow-hidden rounded-[inherit]"
           initial={false}
@@ -79,8 +80,8 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           aria-hidden="true"
         >
           <motion.div
-            className="absolute -inset-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-y-[-12deg]"
-            animate={isHovered ? { left: ["-100%", "200%"] } : {}}
+            className="absolute -inset-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-y-[-12deg] will-change-transform"
+            animate={isHovered ? { x: ["-100%", "200%"] } : {}}
             transition={{ duration: 0.8, ease: "easeInOut" }}
           />
         </motion.div>
@@ -89,9 +90,9 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 dark:from-graphite-800 dark:to-graphite-900">
           <Link href={`/products/${product.id}`} aria-label={`View ${product.name} details`}>
             <motion.div
-              animate={isHovered ? { scale: 1.1 } : { scale: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="w-full h-full"
+              animate={isHovered ? { scale: 1.08 } : { scale: 1 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="w-full h-full will-change-transform"
             >
               <Image
                 src={getAssetUrl(product.image)}
@@ -104,12 +105,12 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             </motion.div>
           </Link>
           
-          {/* Animated badge entries (feature 4) */}
+          {/* Animated badge entries (feature 4) — one-shot spring, no looping */}
           {discountPercent > 0 && (
             <motion.div
               initial={{ scale: 0, rotate: -10 }}
               animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 15, delay: 0.2 }}
+              transition={{ type: "spring", stiffness: 400, damping: 18, delay: 0.2 }}
               className="absolute top-3 left-3 z-10"
             >
               <Badge variant="accent" className="shadow-lg">
@@ -122,7 +123,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             <motion.div
               initial={{ scale: 0, rotate: 10 }}
               animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 15, delay: 0.3 }}
+              transition={{ type: "spring", stiffness: 400, damping: 18, delay: 0.3 }}
               className="absolute top-3 right-3 z-10"
             >
               <Badge variant="primary" className="shadow-lg">
@@ -132,8 +133,11 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           )}
 
           {/* Hover overlay with actions */}
-          <div 
-            className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300"
+          <motion.div 
+            initial={false}
+            animate={{ opacity: isHovered ? 1 : 0 }}
+            transition={{ duration: 0.2 }}
+            className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none"
             aria-hidden="true"
           >
             <div className="absolute bottom-4 left-4 right-4 flex gap-2 justify-center">
@@ -169,7 +173,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                 <Heart className="h-5 w-5" />
               </Button>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Product info */}
