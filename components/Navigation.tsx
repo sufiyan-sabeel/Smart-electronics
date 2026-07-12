@@ -3,8 +3,9 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Menu, X, ShoppingBag, Search, Phone, MessageSquare } from "lucide-react"
+import { Menu, X, ShoppingBag, Search, Phone, MessageSquare, Sun, Moon } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { ThemeToggle } from "@/components/ThemeProvider"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu"
 import { businessInfo, getWhatsAppLink, getCallLink } from "@/lib/business-info"
@@ -81,7 +82,8 @@ export function Navigation() {
               ))}
             </div>
 
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-2">
+              <ThemeToggle />
               <a
                 href={callUrl}
                 className="flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-300 dark:hover:text-primary-400 transition-colors"
@@ -183,6 +185,10 @@ export function Navigation() {
                     <MessageSquare className="h-4 w-4" />
                     WhatsApp Chat
                   </a>
+                </div>
+                <div className="flex items-center justify-between px-3 py-2">
+                  <span className="text-sm text-slate-500 dark:text-slate-400">Theme</span>
+                  <ThemeToggle />
                 </div>
               </div>
             </motion.div>

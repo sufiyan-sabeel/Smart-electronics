@@ -4,6 +4,7 @@ import "./globals.css"
 import { Navigation } from "@/components/Navigation"
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp"
 import { Footer } from "@/components/layout/Footer"
+import { ThemeProvider } from "@/components/ThemeProvider"
 import { businessInfo, siteConfig } from "@/lib/business-info"
 
 const inter = Inter({
@@ -67,14 +68,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
+    <html lang="en" className={`${inter.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://wa.me" />
         <link rel="dns-prefetch" href="https://maps.google.com" />
+        <script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem("theme");if(!t){t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light"}if(t==="dark"){document.documentElement.classList.add("dark")}}catch(e){}})()` }} />
       </head>
       <body className="min-h-full flex flex-col bg-white text-graphite-900 dark:bg-graphite-900 dark:text-slate-100">
+        <ThemeProvider>
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-50 bg-primary-600 text-white px-4 py-2 rounded-lg"
@@ -87,6 +90,7 @@ export default function RootLayout({
         </main>
         <FloatingWhatsApp />
         <Footer />
+        </ThemeProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
