@@ -1,7 +1,8 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, useScroll, useTransform } from "framer-motion"
 import Link from "next/link"
+import { useState, useCallback } from "react"
 import {
   ArrowRight,
   Smartphone,
@@ -14,12 +15,17 @@ import {
   Clock,
   MessageSquare,
   Award,
-  Package,
   Star,
+  Zap,
+  Monitor,
+  Tablet,
+  Volume2,
+  Activity,
+  Cpu,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { businessInfo, getWhatsAppLink, formatPhoneNumber } from "@/lib/business-info"
+import { businessInfo, getWhatsAppLink } from "@/lib/business-info"
 import { useReducedMotion } from "@/hooks/use-reduced-motion"
 
 const trustItems = [
@@ -29,20 +35,56 @@ const trustItems = [
   { icon: Star, text: "98% Customer Satisfaction" },
 ]
 
+// Floating background icons (feature 7)
+const floatingIcons = [
+  { Icon: Smartphone, x: "15%", y: "20%", size: 28, delay: 0, duration: 8 },
+  { Icon: Headphones, x: "85%", y: "15%", size: 24, delay: 0.5, duration: 10 },
+  { Icon: Monitor, x: "75%", y: "70%", size: 32, delay: 1, duration: 9 },
+  { Icon: Zap, x: "10%", y: "75%", size: 20, delay: 1.5, duration: 7 },
+  { Icon: Watch, x: "90%", y: "50%", size: 22, delay: 2, duration: 11 },
+  { Icon: Cpu, x: "50%", y: "10%", size: 18, delay: 2.5, duration: 9 },
+  { Icon: Tablet, x: "20%", y: "50%", size: 26, delay: 3, duration: 8 },
+  { Icon: Volume2, x: "60%", y: "80%", size: 20, delay: 3.5, duration: 10 },
+]
+
+// Floating product entrance silhouettes (feature 1)
+const entranceDevices = [
+  { Icon: Smartphone, label: "Smartphone", x: 0.12, y: 0.25, delay: 0.6, rotate: -8 },
+  { Icon: Laptop, label: "Laptop", x: 0.82, y: 0.35, delay: 0.9, rotate: 5 },
+  { Icon: Watch, label: "Watch", x: 0.88, y: 0.12, delay: 1.2, rotate: 12 },
+  { Icon: Headphones, label: "Headphones", x: 0.08, y: 0.55, delay: 0.7, rotate: -5 },
+  { Icon: Tablet, label: "Tablet", x: 0.16, y: 0.38, delay: 1.0, rotate: -3 },
+]
+
 export function Hero() {
   const prefersReducedMotion = useReducedMotion()
-
   const whatsappUrl = getWhatsAppLink(
     businessInfo.whatsapp,
     "Hello! I'd like to know more about your products and services."
   )
+
+  // Power On showcase (feature 6)
+  const [powerState, setPowerState] = useState<"off" | "booting" | "on">("off")
+
+  const handlePowerOn = useCallback(() => {
+    if (powerState === "off") {
+      setPowerState("booting")
+      setTimeout(() => setPowerState("on"), 2500)
+    } else {
+      setPowerState("off")
+    }
+  }, [powerState])
+
+  // Scroll parallax
+  const { scrollY } = useScroll()
+  const heroParallax = useTransform(scrollY, [0, 500], [0, -40])
 
   return (
     <section
       className="relative min-h-[90vh] flex items-center overflow-hidden bg-white dark:bg-graphite-900"
       aria-labelledby="hero-heading"
     >
-      {/* Background pattern */}
+      {/* Background gradient */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--color-primary-50)_0%,_transparent_50%),radial-gradient(ellipse_at_bottom_left,_var(--color-accent-50)_0%,_transparent_50%)] dark:bg-[radial-gradient(ellipse_at_top_right,_var(--color-primary-900/20)_0%,_transparent_50%),radial-gradient(ellipse_at_bottom_left,_var(--color-accent-900/10)_0%,_transparent_50%)]" aria-hidden="true" />
 
       {/* Subtle grid overlay */}
@@ -54,11 +96,90 @@ export function Hero() {
         aria-hidden="true"
       />
 
+      {/* Feature 7: Floating background icons */}
+      {!prefersReducedMotion && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden hidden sm:block" aria-hidden="true">
+          {floatingIcons.map((item, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-primary-400/15 dark:text-primary-500/20"
+              style={{ left: item.x, top: item.y }}
+              animate={{
+                y: [0, -15, 0, 10, 0],
+                rotate: [0, 5, -3, 2, 0],
+              }}
+              transition={{
+                duration: item.duration,
+                delay: item.delay,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              <item.Icon size={item.size} />
+            </motion.div>
+          ))}
+        </div>
+      )}
+
+      {/* Feature 1: Floating product entrance silhouettes */}
+      {!prefersReducedMotion && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden hidden md:block" aria-hidden="true">
+          {entranceDevices.map((device, i) => (
+            <motion.div
+              key={i}
+              className="absolute"
+              style={{ left: `${device.x * 100}%`, top: `${device.y * 100}%` }}
+              initial={{ 
+                opacity: 0, 
+                x: device.x < 0.5 ? -80 : 80, 
+                y: 40,
+                rotate: device.rotate,
+                scale: 0.6,
+              }}
+              animate={{ 
+                opacity: 1, 
+                x: 0, 
+                y: 0,
+                rotate: device.rotate,
+                scale: 1,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 60,
+                damping: 12,
+                delay: device.delay,
+                mass: 1.2,
+              }}
+            >
+              <div className="relative">
+                <motion.div
+                  animate={{
+                    y: [0, -6, 0],
+                  }}
+                  transition={{
+                    duration: 4 + i * 0.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: i * 0.3,
+                  }}
+                >
+                  <div className="p-3 rounded-2xl bg-white/80 dark:bg-graphite-800/80 backdrop-blur-sm shadow-lg border border-slate-200/60 dark:border-graphite-700/60">
+                    <device.Icon className="h-8 w-8 text-primary-500 dark:text-primary-400" />
+                  </div>
+                </motion.div>
+                {/* Glow dot */}
+                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1.5 w-1.5 rounded-full bg-primary-400/50 blur-sm" />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )}
+
       {/* Decorative gradient orbs */}
       <div className="absolute top-1/3 -left-48 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl" aria-hidden="true" />
       <div className="absolute bottom-1/4 -right-48 w-[500px] h-[500px] bg-accent-400/10 rounded-full blur-3xl" aria-hidden="true" />
 
-      <div className="container-custom relative z-10 py-20 lg:py-28">
+      <motion.div className="container-custom relative z-10 py-20 lg:py-28" style={{ y: heroParallax }}>
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left: Text Content */}
           <motion.div
@@ -135,11 +256,159 @@ export function Hero() {
               </Button>
             </motion.div>
 
+            {/* Feature 6: Power On Showcase */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: prefersReducedMotion ? 0 : 0.8 }}
+              className="mt-6"
+            >
+              <button
+                onClick={handlePowerOn}
+                className="group flex items-center gap-2.5 px-4 py-2 rounded-xl bg-slate-100 dark:bg-graphite-800 border border-slate-200 dark:border-graphite-700 hover:border-primary-300 dark:hover:border-primary-700 transition-all hover:shadow-md active:scale-[0.98]"
+                aria-label={powerState === "off" ? "Power on device showcase" : "Power off device showcase"}
+              >
+                {/* Animated power icon */}
+                <motion.div
+                  animate={
+                    powerState === "booting"
+                      ? { rotate: [0, 360] }
+                      : powerState === "on"
+                      ? { scale: [1, 1.2, 1] }
+                      : {}
+                  }
+                  transition={
+                    powerState === "booting"
+                      ? { duration: 1, repeat: Infinity, ease: "linear" }
+                      : { duration: 0.4 }
+                  }
+                  className={`p-1.5 rounded-lg ${
+                    powerState === "on"
+                      ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
+                      : powerState === "booting"
+                      ? "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"
+                      : "bg-slate-200 dark:bg-graphite-700 text-slate-500 dark:text-slate-400"
+                  }`}
+                >
+                  <Zap className="h-4 w-4" />
+                </motion.div>
+
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                  {powerState === "off" && "Power On Device Showcase"}
+                  {powerState === "booting" && "Powering up..."}
+                  {powerState === "on" && "Device is On — Tap to power off"}
+                </span>
+
+                {/* Live indicator */}
+                <span className={`h-2 w-2 rounded-full transition-colors ${
+                  powerState === "on" ? "bg-emerald-400 animate-pulse" :
+                  powerState === "booting" ? "bg-amber-400 animate-pulse" :
+                  "bg-slate-300 dark:bg-graphette-600"
+                }`} />
+              </button>
+
+              {/* Phone boot animation */}
+              {powerState !== "off" && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="mt-4 overflow-hidden"
+                >
+                  <Card className="border-slate-200 dark:border-graphite-700 shadow-md overflow-hidden max-w-sm">
+                    <div className="relative bg-gradient-to-b from-graphite-900 to-graphite-800 p-6">
+                      {/* Phone frame */}
+                      <div className="mx-auto w-48 h-[320px] rounded-[28px] bg-black border-2 border-graphite-600 relative overflow-hidden shadow-2xl">
+                        {/* Screen */}
+                        <div className="absolute inset-[3px] rounded-[25px] bg-gradient-to-b from-primary-900/80 to-graphite-900 overflow-hidden">
+                          {/* Notch */}
+                          <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-full z-10" />
+                          
+                          {/* Boot animation content */}
+                          {powerState === "booting" ? (
+                            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+                              <motion.div
+                                animate={{ scale: [0.8, 1.2, 0.8], opacity: [0.3, 1, 0.3] }}
+                                transition={{ duration: 1.5, repeat: Infinity }}
+                              >
+                                <Smartphone className="h-10 w-10 text-primary-400" />
+                              </motion.div>
+                              <div className="w-3/4 space-y-2">
+                                <motion.div
+                                  className="h-1 rounded-full bg-primary-500/30 overflow-hidden"
+                                >
+                                  <motion.div
+                                    className="h-full bg-gradient-to-r from-primary-500 to-blue-400 rounded-full"
+                                    animate={{ x: ["-100%", "100%"] }}
+                                    transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                                  />
+                                </motion.div>
+                                <motion.div
+                                  className="h-0.5 rounded-full bg-primary-400/20 overflow-hidden"
+                                >
+                                  <motion.div
+                                    className="h-full bg-gradient-to-r from-primary-400 to-accent-400 rounded-full w-1/2"
+                                    animate={{ x: ["-50%", "150%"] }}
+                                    transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                                  />
+                                </motion.div>
+                                <motion.p
+                                  animate={{ opacity: [0.4, 1, 0.4] }}
+                                  transition={{ duration: 1, repeat: Infinity }}
+                                  className="text-[10px] text-center text-primary-300/70 font-mono mt-2"
+                                >
+                                  Initializing...
+                                </motion.p>
+                              </div>
+                            </div>
+                          ) : (
+                            <motion.div
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              className="absolute inset-0 flex flex-col items-center justify-center gap-2"
+                            >
+                              <motion.div
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                              >
+                                <Smartphone className="h-8 w-8 text-emerald-400" />
+                              </motion.div>
+                              <motion.p
+                                initial={{ y: 10, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 0.2 }}
+                                className="text-xs font-medium text-emerald-400"
+                              >
+                                Ready to connect.
+                              </motion.p>
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: "60%" }}
+                                transition={{ duration: 0.5, delay: 0.3 }}
+                                className="h-0.5 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full mt-2"
+                              />
+                            </motion.div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Label */}
+                      <p className="text-center text-xs text-slate-400 mt-4 font-mono">
+                        {powerState === "booting" ? "Booting Smart Electronics OS..." : "Smart Electronics OS v3.1"}
+                      </p>
+                    </div>
+                  </Card>
+                </motion.div>
+              )}
+            </motion.div>
+
             {/* Trust Highlights */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.7 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: powerState === "off" ? 0.7 : 1.2 }}
               className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3"
             >
               {trustItems.map((item, index) => (
@@ -147,7 +416,10 @@ export function Hero() {
                   key={item.text}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: prefersReducedMotion ? 0 : 0.4, delay: prefersReducedMotion ? 0 : 0.7 + index * 0.1 }}
+                  transition={{
+                    duration: prefersReducedMotion ? 0 : 0.4,
+                    delay: prefersReducedMotion ? 0 : (powerState === "off" ? 0.7 : 1.2) + index * 0.1,
+                  }}
                   className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-white/70 dark:bg-graphite-800/70 backdrop-blur border border-slate-200/60 dark:border-graphite-700/60"
                 >
                   <item.icon className="h-4 w-4 text-primary-500 flex-shrink-0" aria-hidden="true" />
@@ -160,7 +432,7 @@ export function Hero() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 1.0 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: powerState === "off" ? 1.0 : 1.5 }}
               className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-slate-500 dark:text-slate-400"
             >
               <div className="flex items-center gap-1.5">
@@ -182,65 +454,67 @@ export function Hero() {
             className="hidden lg:block relative"
           >
             <div className="relative">
-              {/* Decorative background blob */}
-              <div className="absolute -top-20 -right-20 w-80 h-80 bg-gradient-to-br from-primary-200/40 to-accent-200/40 dark:from-primary-700/20 dark:to-accent-700/20 rounded-full blur-3xl" aria-hidden="true" />
+              {/* Glow effect behind featured product (feature 1) */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: prefersReducedMotion ? 0 : 1, delay: 0.5 }}
+                className="absolute -top-20 left-1/2 -translate-x-1/2 w-96 h-96 bg-gradient-to-br from-primary-400/20 via-primary-300/10 to-blue-400/20 rounded-full blur-3xl"
+                aria-hidden="true"
+              />
 
               {/* Product showcase grid */}
               <div className="relative grid grid-cols-2 gap-4">
-                {/* Product 1 */}
-                <Card className="border-slate-200 dark:border-graphite-700 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                  <CardContent className="p-5">
-                    <div className="aspect-square rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-graphite-800 dark:to-graphite-700 flex items-center justify-center mb-3">
-                      <Smartphone className="h-16 w-16 text-primary-500 dark:text-primary-400" aria-hidden="true" />
-                    </div>
-                    <h4 className="font-semibold text-graphite-900 dark:text-white text-sm">Smartphones</h4>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Latest flagships &amp; budget picks</p>
-                  </CardContent>
-                </Card>
-
-                {/* Product 2 */}
-                <Card className="border-slate-200 dark:border-graphite-700 shadow-lg hover:shadow-xl transition-shadow duration-300 mt-8">
-                  <CardContent className="p-5">
-                    <div className="aspect-square rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-graphite-800 dark:to-graphite-700 flex items-center justify-center mb-3">
-                      <Laptop className="h-16 w-16 text-primary-500 dark:text-primary-400" aria-hidden="true" />
-                    </div>
-                    <h4 className="font-semibold text-graphite-900 dark:text-white text-sm">Laptops</h4>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Work, study &amp; gaming machines</p>
-                  </CardContent>
-                </Card>
-
-                {/* Product 3 */}
-                <Card className="border-slate-200 dark:border-graphite-700 shadow-lg hover:shadow-xl transition-shadow duration-300 -mt-4">
-                  <CardContent className="p-5">
-                    <div className="aspect-square rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-graphite-800 dark:to-graphite-700 flex items-center justify-center mb-3">
-                      <Watch className="h-16 w-16 text-primary-500 dark:text-primary-400" aria-hidden="true" />
-                    </div>
-                    <h4 className="font-semibold text-graphite-900 dark:text-white text-sm">Smart Watches</h4>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Track your fitness &amp; stay connected</p>
-                  </CardContent>
-                </Card>
-
-                {/* Product 4 */}
-                <Card className="border-slate-200 dark:border-graphite-700 shadow-lg hover:shadow-xl transition-shadow duration-300 mt-4">
-                  <CardContent className="p-5">
-                    <div className="aspect-square rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-graphite-800 dark:to-graphite-700 flex items-center justify-center mb-3">
-                      <Headphones className="h-16 w-16 text-primary-500 dark:text-primary-400" aria-hidden="true" />
-                    </div>
-                    <h4 className="font-semibold text-graphite-900 dark:text-white text-sm">Audio &amp; Accessories</h4>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Earbuds, speakers &amp; more</p>
-                  </CardContent>
-                </Card>
+                {[
+                  { Icon: Smartphone, title: "Smartphones", desc: "Latest flagships &amp; budget picks", delay: 0.5 },
+                  { Icon: Laptop, title: "Laptops", desc: "Work, study &amp; gaming machines", delay: 0.6, offset: "mt-8" },
+                  { Icon: Watch, title: "Smart Watches", desc: "Track your fitness &amp; stay connected", delay: 0.7, offset: "-mt-4" },
+                  { Icon: Headphones, title: "Audio &amp; Accessories", desc: "Earbuds, speakers &amp; more", delay: 0.8, offset: "mt-4" },
+                ].map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 80,
+                      damping: 15,
+                      delay: prefersReducedMotion ? 0 : item.delay,
+                    }}
+                    className={item.offset || ""}
+                  >
+                    <Card className="border-slate-200 dark:border-graphite-700 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                      <CardContent className="p-5">
+                        <div className="aspect-square rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-graphite-800 dark:to-graphite-700 flex items-center justify-center mb-3">
+                          <item.Icon className="h-16 w-16 text-primary-500 dark:text-primary-400" aria-hidden="true" />
+                        </div>
+                        <h4 className="font-semibold text-graphite-900 dark:text-white text-sm">{item.title}</h4>
+                        <p className="text-xs text-slate-500 dark:text-slate-400" dangerouslySetInnerHTML={{ __html: item.desc }} />
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
               </div>
 
               {/* Floating product count badge */}
-              <div className="absolute -bottom-4 -left-4 bg-white dark:bg-graphite-800 rounded-2xl shadow-xl border border-slate-200 dark:border-graphite-700 px-5 py-3">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 200,
+                  damping: 15,
+                  delay: prefersReducedMotion ? 0 : 1.2,
+                }}
+                className="absolute -bottom-4 -left-4 bg-white dark:bg-graphite-800 rounded-2xl shadow-xl border border-slate-200 dark:border-graphite-700 px-5 py-3"
+              >
                 <p className="text-xs text-slate-500 dark:text-slate-400">From top brands</p>
                 <p className="text-lg font-bold text-primary-600 dark:text-primary-400">500+ Products</p>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Scroll indicator */}
       <motion.div

@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { offers, products } from "@/lib/data"
-import { prefersReducedMotion } from "@/hooks/use-reduced-motion"
+import { useReducedMotion } from "@/hooks/use-reduced-motion"
 import { cn, getAssetUrl } from "@/lib/utils"
 
 const offerIcons = {
@@ -18,6 +18,7 @@ const offerIcons = {
 }
 
 export function OfferCard({ offer, index }: { offer: typeof offers[0]; index: number }) {
+  const prefersReducedMotion = useReducedMotion()
   const offerProducts = offer.products.map(id => products.find(p => p.id === id)).filter(Boolean)
   const OfferIcon = offerIcons[offer.id as keyof typeof offerIcons]
 
@@ -32,7 +33,14 @@ export function OfferCard({ offer, index }: { offer: typeof offers[0]; index: nu
         <CardContent className="p-6">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <Badge variant="outline" className="mb-2">{offer.badge}</Badge>
+              <motion.div
+                initial={{ scale: 0, rotate: -15 }}
+                whileInView={{ scale: 1, rotate: 0 }}
+                viewport={{ once: true }}
+                transition={{ type: "spring", stiffness: 300, damping: 15 }}
+              >
+                <Badge variant="outline" className="mb-2">{offer.badge}</Badge>
+              </motion.div>
               <h3 className="text-xl font-bold text-graphite-900 dark:text-white">{offer.title}</h3>
             </div>
             <div className="p-3 rounded-xl bg-white/50 dark:bg-graphite-900/50 backdrop-blur">
