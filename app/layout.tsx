@@ -7,6 +7,8 @@ import { FloatingWhatsApp } from "@/components/FloatingWhatsApp"
 import { StickyMobileContact, STICKY_BAR_HEIGHT } from "@/components/StickyMobileContact"
 import { Footer } from "@/components/layout/Footer"
 import { ThemeProvider } from "@/components/ThemeProvider"
+import { ScrollProgress } from "@/components/ScrollProgress"
+import { Quiz } from "@/components/Quiz"
 import { businessInfo, siteConfig } from "@/lib/business-info"
 
 const inter = Inter({
@@ -87,6 +89,7 @@ export default function RootLayout({
           Skip to main content
         </a>
         <AnnouncementBar />
+        <ScrollProgress />
         <Navigation />
         <main id="main-content" className="flex-1" role="main">
           {children}
