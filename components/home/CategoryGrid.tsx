@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Smartphone, Laptop, Watch, Headphones, Speaker, Package, BatteryCharging, Battery, Cable, ArrowRight } from "lucide-react"
@@ -29,6 +30,7 @@ export function CategoryCard({ category, index }: CategoryCardProps) {
   const prefersReducedMotion = typeof window !== "undefined" 
     ? window.matchMedia("(prefers-reduced-motion: reduce)").matches 
     : false
+  const [isSelected, setIsSelected] = useState(false)
 
   const Icon = categoryIcons[category.icon] || Package
 
@@ -38,33 +40,55 @@ export function CategoryCard({ category, index }: CategoryCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: prefersReducedMotion ? 0 : index * 0.05 }}
+      onClick={() => {
+        setIsSelected(true)
+        setTimeout(() => setIsSelected(false), 600)
+      }}
     >
-      <Card className="group h-full border-slate-200 dark:border-graphite-700 hover:border-primary-300 dark:hover:border-primary-700 overflow-hidden">
-        <Link 
-          href={`/products?category=${category.id}`}
-          className="block h-full"
-          aria-label={`Browse ${category.name} - ${category.count} products available`}
-        >
-          <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-primary-50 to-whatsapp-50 dark:from-primary-900/20 dark:to-whatsapp-900/20">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Icon className="h-16 w-16 text-primary-600 dark:text-primary-400 group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
+      <motion.div
+        animate={isSelected ? { scale: [1, 1.05, 0.97, 1] } : {}}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
+        <Card className="group h-full border-slate-200 dark:border-graphite-700 hover:border-primary-300 dark:hover:border-primary-700 overflow-hidden relative">
+          {/* Active underline (feature 3) */}
+          <motion.div
+            className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-500 to-blue-400"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 0 }}
+            animate={isSelected ? { scaleX: [0, 1, 0] } : {}}
+            transition={{ duration: 0.6 }}
+            style={{ transformOrigin: "left" }}
+          />
+          <Link 
+            href={`/products?category=${category.id}`}
+            className="block h-full"
+            aria-label={`Browse ${category.name} - ${category.count} products available`}
+          >
+            <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20">
+              <motion.div 
+                className="absolute inset-0 flex items-center justify-center"
+                animate={isSelected ? { scale: [1, 1.15, 1] } : {}}
+                transition={{ duration: 0.4 }}
+              >
+                <Icon className="h-16 w-16 text-primary-600 dark:text-primary-400 group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
+              </motion.div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
             </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
-          </div>
-          <CardContent className="p-5 text-center">
-            <h3 className="font-semibold text-graphite-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors mb-1">
-              {category.name}
-            </h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
-              {category.count} products
-            </p>
-            <span className="inline-flex items-center gap-1 text-sm font-medium text-primary-600 dark:text-primary-400 group-hover:gap-2 transition-all">
-              Explore
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </span>
-          </CardContent>
-        </Link>
-      </Card>
+            <CardContent className="p-5 text-center">
+              <h3 className="font-semibold text-graphite-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors mb-1">
+                {category.name}
+              </h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
+                {category.count} products
+              </p>
+              <span className="inline-flex items-center gap-1 text-sm font-medium text-primary-600 dark:text-primary-400 group-hover:gap-2 transition-all">
+                Explore
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </span>
+            </CardContent>
+          </Link>
+        </Card>
+      </motion.div>
     </motion.div>
   )
 }

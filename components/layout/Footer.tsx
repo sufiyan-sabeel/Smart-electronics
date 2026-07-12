@@ -21,7 +21,7 @@ export function Footer() {
       { label: "Laptop Repair", href: "/services#laptop-repair" },
       { label: "Warranty Support", href: "/services#warranty-support" },
       { label: "Exchange Offers", href: "/offers#exchange-offers" },
-      { label: "Track Repair", href: "/contact#track-repair" },
+      { label: "Track Repair", href: "/services" },
     ],
     company: [
       { label: "About Us", href: "/about" },
@@ -32,12 +32,12 @@ export function Footer() {
       { label: "Careers", href: "/careers" },
     ],
     policies: [
-      { label: "Privacy Policy", href: "/privacy" },
-      { label: "Terms of Service", href: "/terms" },
-      { label: "Return Policy", href: "/returns" },
-      { label: "Warranty Policy", href: "/warranty" },
-      { label: "Shipping Info", href: "/shipping" },
-      { label: "GST Details", href: "/gst" },
+      { label: "Privacy Policy", href: "/contact" },
+      { label: "Terms of Service", href: "/contact" },
+      { label: "Return Policy", href: "/services" },
+      { label: "Warranty Policy", href: "/services#warranty-support" },
+      { label: "Shipping Info", href: "/contact" },
+      { label: "GST Details", href: "/about" },
     ],
   }
 

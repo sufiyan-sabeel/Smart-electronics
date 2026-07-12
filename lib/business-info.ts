@@ -1,15 +1,15 @@
 export const businessInfo = {
   name: "Smart Electronics",
-  tagline: "Premium Electronics. Trusted Service. Best Deals.",
+  tagline: "Latest Electronics. Trusted Local Service.",
   phone: "+91 XXXXX XXXXX",
   whatsapp: "+91XXXXXXXXXX",
   email: "contact@example.com",
   address: "Smart Electronics, Main Road, Chikkamagaluru, Karnataka 577101",
   googleMapsUrl: "https://maps.google.com/?q=Smart+Electronics+Chikkamagaluru+Karnataka",
   openingHours: {
-    weekdays: "Mon-Sat: 10:00 AM - 8:00 PM",
-    saturday: "Sat: 10:00 AM - 8:00 PM",
-    sunday: "Sun: 11:00 AM - 6:00 PM",
+    weekdays: "Mon-Sat: 9:30 AM - 9:00 PM",
+    saturday: "Sat: 9:30 AM - 9:00 PM",
+    sunday: "Sun: 10:00 AM - 7:00 PM",
   },
   social: {
     facebook: "https://facebook.com/smartelectronics",

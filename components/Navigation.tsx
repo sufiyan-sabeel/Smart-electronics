@@ -27,7 +27,7 @@ export function Navigation() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20)
+    const handleScroll = () => setIsScrolled(window.scrollY > 40)
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
@@ -75,7 +75,7 @@ export function Navigation() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm font-medium text-slate-600 hover:text-graphite-900 dark:text-slate-300 dark:hover:text-white transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-primary-600 after:transition-transform after:duration-300 hover:after:origin-bottom-left hover:after:scale-x-100"
+                  className="text-sm font-medium text-slate-600 hover:text-graphite-900 dark:text-slate-300 dark:hover:text-white transition-colors px-1 py-2 relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-primary-600 after:transition-transform after:duration-300 hover:after:origin-bottom-left hover:after:scale-x-100"
                 >
                   {link.label}
                 </Link>
@@ -102,14 +102,14 @@ export function Navigation() {
                 <span>WhatsApp</span>
               </a>
 
-              <Button variant="ghost" size="icon" className="relative" aria-label="Search products">
+              <Button variant="ghost" size="icon" className="relative hidden lg:inline-flex" aria-label="Search products">
                 <Search className="h-5 w-5" aria-hidden="true" />
               </Button>
             </div>
 
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-graphite-800 transition-colors"
+              className="md:hidden p-2.5 rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-graphite-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}

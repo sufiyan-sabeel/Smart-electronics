@@ -12,6 +12,7 @@ export function FloatingWhatsApp() {
   const [isExpanded, setIsExpanded] = useState(false)
   const [copied, setCopied] = useState<string | null>(null)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  const [pageLoaded, setPageLoaded] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -21,6 +22,16 @@ export function FloatingWhatsApp() {
     mediaQuery.addEventListener("change", handler)
     return () => mediaQuery.removeEventListener("change", handler)
   }, [])
+
+  // Single bounce on page load (feature 9)
+  useEffect(() => {
+    if (!prefersReducedMotion) {
+      const timer = setTimeout(() => setPageLoaded(true), 1500)
+      return () => clearTimeout(timer)
+    } else {
+      setPageLoaded(true)
+    }
+  }, [prefersReducedMotion])
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -155,11 +166,15 @@ export function FloatingWhatsApp() {
               whileHover={{ scale: isExpanded ? 1.1 : 1.05 }}
               whileTap={{ scale: 0.95 }}
               animate={{
+                scale: pageLoaded ? (isExpanded ? 1.1 : 1) : [0.8, 1.05, 1],
                 boxShadow: prefersReducedMotion
                   ? "0 10px 25px -5px rgba(0,0,0,0.1)"
                   : ["0 10px 25px -5px rgba(0,0,0,0.1)", "0 20px 25px -5px rgba(0,0,0,0.15)", "0 10px 25px -5px rgba(0,0,0,0.1)"],
               }}
-              transition={{ duration: prefersReducedMotion ? 0 : 2, repeat: Infinity }}
+              transition={{ 
+                scale: { type: "spring", stiffness: 300, damping: 10, duration: prefersReducedMotion ? 0 : 0.6 },
+                boxShadow: { duration: prefersReducedMotion ? 0 : 2, repeat: Infinity }
+              }}
             >
               <AnimatePresence mode="wait">
                 {isExpanded ? (
@@ -187,13 +202,20 @@ export function FloatingWhatsApp() {
 
               <motion.span
                 initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: isExpanded ? 0 : 1, scale: isExpanded ? 0.5 : 1 }}
+                animate={{ 
+                  opacity: isExpanded ? 0 : 1, 
+                  scale: isExpanded ? 0.5 : 1,
+                  y: [0, -2, 0]
+                }}
                 exit={{ opacity: 0, scale: 0.5 }}
-                transition={{ duration: prefersReducedMotion ? 0 : 0.15 }}
+                transition={{ 
+                  duration: prefersReducedMotion ? 0 : 0.15,
+                  y: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                }}
                 className="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-graphite-900 px-2 py-1 text-xs font-medium text-white shadow-lg dark:bg-slate-100 dark:text-graphite-900"
                 aria-hidden="true"
               >
-                Chat with us
+                Ask about this product
               </motion.span>
 
               <motion.div

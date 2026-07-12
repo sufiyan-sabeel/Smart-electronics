@@ -1,15 +1,16 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, useMotionValue, useTransform } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
-import { Star, MessageSquare, Heart, Eye, Zap } from "lucide-react"
+import { Star, MessageSquare, Heart, Eye, Zap, Sparkles } from "lucide-react"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Product } from "@/lib/data"
 import { formatPrice, getWhatsAppLink, getWhatsAppMessage, getAssetUrl } from "@/lib/utils"
 import { cn } from "@/lib/utils"
+import { useRef, useState, useEffect } from "react"
 
 interface ProductCardProps {
   product: Product
@@ -17,9 +18,9 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, priority = false }: ProductCardProps) {
-  const prefersReducedMotion = typeof window !== "undefined" 
-    ? window.matchMedia("(prefers-reduced-motion: reduce)").matches 
-    : false
+  const prefersReducedMotion = useReducedMotion()
+  const [isHovered, setIsHovered] = useState(false)
+  const cardRef = useRef<HTMLDivElement>(null)
 
   const whatsappUrl = getWhatsAppLink(
     "91XXXXXXXXXX",
@@ -30,39 +31,104 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0
 
+  // Mouse position for tilt effect (feature 2)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const rotateX = useTransform(y, [-0.5, 0.5], [3, -3])
+  const rotateY = useTransform(x, [-0.5, 0.5], [-3, 3])
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!cardRef.current || prefersReducedMotion) return
+    const rect = cardRef.current.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    x.set((e.clientX - centerX) / rect.width)
+    y.set((e.clientY - centerY) / rect.height)
+  }
+
+  const handleMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+    setIsHovered(false)
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: prefersReducedMotion ? 0 : 0.5 }}
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={handleMouseLeave}
+      style={prefersReducedMotion ? {} : { perspective: 1000, rotateX, rotateY }}
     >
-      <Card className="group h-full flex flex-col border-slate-200 dark:border-graphite-700 hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+      <Card className={cn(
+        "group h-full flex flex-col border-slate-200 dark:border-graphite-700 overflow-hidden",
+        "transition-all duration-300 relative",
+        isHovered 
+          ? "border-primary-300 dark:border-primary-700 shadow-xl -translate-y-1" 
+          : "hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-xl hover:-translate-y-1"
+      )}>
+        {/* Shine sweep overlay (feature 2) */}
+        <motion.div
+          className="absolute inset-0 z-20 pointer-events-none overflow-hidden rounded-[inherit]"
+          initial={false}
+          animate={isHovered ? { opacity: 1 } : { opacity: 0 }}
+          aria-hidden="true"
+        >
+          <motion.div
+            className="absolute -inset-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-y-[-12deg]"
+            animate={isHovered ? { left: ["-100%", "200%"] } : {}}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+          />
+        </motion.div>
+
         {/* Image container */}
         <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 dark:from-graphite-800 dark:to-graphite-900">
           <Link href={`/products/${product.id}`} aria-label={`View ${product.name} details`}>
-            <Image
-              src={getAssetUrl(product.image)}
-              alt={product.name}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              loading={priority ? "eager" : "lazy"}
-            />
+            <motion.div
+              animate={isHovered ? { scale: 1.1 } : { scale: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="w-full h-full"
+            >
+              <Image
+                src={getAssetUrl(product.image)}
+                alt={product.name}
+                fill
+                className="object-cover"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                loading={priority ? "eager" : "lazy"}
+              />
+            </motion.div>
           </Link>
           
-          {/* Discount badge */}
+          {/* Animated badge entries (feature 4) */}
           {discountPercent > 0 && (
-            <Badge variant="accent" className="absolute top-3 left-3 z-10 shadow-lg">
-              <Zap className="h-3 w-3 mr-1" /> -{discountPercent}%
-            </Badge>
+            <motion.div
+              initial={{ scale: 0, rotate: -10 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 15, delay: 0.2 }}
+              className="absolute top-3 left-3 z-10"
+            >
+              <Badge variant="accent" className="shadow-lg">
+                <Zap className="h-3 w-3 mr-1" /> -{discountPercent}%
+              </Badge>
+            </motion.div>
           )}
           
-          {/* Product badge */}
           {product.badge && (
-            <Badge variant="primary" className="absolute top-3 right-3 z-10 shadow-lg">
-              {product.badge}
-            </Badge>
+            <motion.div
+              initial={{ scale: 0, rotate: 10 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 15, delay: 0.3 }}
+              className="absolute top-3 right-3 z-10"
+            >
+              <Badge variant="primary" className="shadow-lg">
+                <Sparkles className="h-3 w-3 mr-1" /> {product.badge}
+              </Badge>
+            </motion.div>
           )}
 
           {/* Hover overlay with actions */}
@@ -73,7 +139,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             <div className="absolute bottom-4 left-4 right-4 flex gap-2 justify-center">
               <Button
                 size="icon"
-                className="bg-white/95 text-graphite-900 hover:bg-white shadow-lg hover:shadow-xl h-10 w-10 rounded-xl backdrop-blur"
+                className="bg-white/95 text-graphite-900 hover:bg-white shadow-lg hover:shadow-xl h-10 w-10 rounded-xl backdrop-blur active:scale-90 transition-transform"
                 asChild
               >
                 <Link href={`/products/${product.id}`} aria-label={`View ${product.name}`}>
@@ -83,7 +149,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               <Button
                 variant="whatsapp"
                 size="icon"
-                className="h-10 w-10 rounded-xl shadow-lg"
+                className="h-10 w-10 rounded-xl shadow-lg active:scale-90 transition-transform"
                 asChild
               >
                 <a
@@ -97,7 +163,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               </Button>
               <Button
                 size="icon"
-                className="bg-white/95 text-graphite-900 hover:bg-white hover:text-red-500 shadow-lg hover:shadow-xl h-10 w-10 rounded-xl backdrop-blur"
+                className="bg-white/95 text-graphite-900 hover:bg-white hover:text-red-500 shadow-lg hover:shadow-xl h-10 w-10 rounded-xl backdrop-blur active:scale-90 transition-transform"
                 aria-label="Add to wishlist"
               >
                 <Heart className="h-5 w-5" />
@@ -152,7 +218,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         <CardFooter className="p-5 pt-0">
           <Button
             variant="whatsapp"
-            className="w-full rounded-xl shadow-sm"
+            className="w-full rounded-xl shadow-sm active:scale-[0.97] transition-transform"
             asChild
             size="sm"
           >
@@ -169,6 +235,18 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       </Card>
     </motion.div>
   )
+}
+
+function useReducedMotion() {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
+    setPrefersReducedMotion(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
+  return prefersReducedMotion
 }
 
 export function ProductSkeleton() {

@@ -2,7 +2,9 @@ import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { Navigation } from "@/components/Navigation"
+import { AnnouncementBar } from "@/components/home/AnnouncementBar"
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp"
+import { StickyMobileContact, STICKY_BAR_HEIGHT } from "@/components/StickyMobileContact"
 import { Footer } from "@/components/layout/Footer"
 import { ThemeProvider } from "@/components/ThemeProvider"
 import { businessInfo, siteConfig } from "@/lib/business-info"
@@ -76,7 +78,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://maps.google.com" />
         <script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem("theme");if(!t){t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light"}if(t==="dark"){document.documentElement.classList.add("dark")}}catch(e){}})()` }} />
       </head>
-      <body className="min-h-full flex flex-col bg-white text-graphite-900 dark:bg-graphite-900 dark:text-slate-100">
+      <body className={`min-h-full flex flex-col bg-white text-graphite-900 dark:bg-graphite-900 dark:text-slate-100 ${STICKY_BAR_HEIGHT}`}>
         <ThemeProvider>
         <a
           href="#main-content"
@@ -84,11 +86,14 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
+        <AnnouncementBar />
         <Navigation />
         <main id="main-content" className="flex-1" role="main">
           {children}
         </main>
         <FloatingWhatsApp />
+        <Quiz />
+        <StickyMobileContact />
         <Footer />
         </ThemeProvider>
         <script
