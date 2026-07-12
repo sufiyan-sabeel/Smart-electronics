@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { motion } from "framer-motion"
 import { MapPin, Phone, Mail, Clock, MessageSquare, Send, Check, Loader2, AlertCircle } from "lucide-react"
 import { businessInfo, formatPhoneNumber, getCallLink, getWhatsAppLink } from "@/lib/business-info"
@@ -321,9 +322,9 @@ export default function ContactPage() {
 
                       <p className="text-xs text-slate-500 dark:text-slate-500 text-center">
                         By submitting this form, you agree to our{' '}
-                        <a href="/privacy" className="underline hover:text-primary-600">Privacy Policy</a>
+                        <Link href="/privacy" className="underline hover:text-primary-600">Privacy Policy</Link>
                         {' '}and{' '}
-                        <a href="/terms" className="underline hover:text-primary-600">Terms of Service</a>
+                        <Link href="/terms" className="underline hover:text-primary-600">Terms of Service</Link>
                       </p>
                     </form>
                   </CardContent>

@@ -1,18 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
-  <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#004499"/>
-      <stop offset="100%" style="stop-color:#0077DD"/>
-    </linearGradient>
-    <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:rgba(255,255,255,0.15)"/>
-      <stop offset="100%" style="stop-color:rgba(255,255,255,0)"/>
-    </linearGradient>
-  </defs>
-  <rect width="600" height="600" fill="url(#bg)" rx="24"/>
-  <rect width="600" height="300" fill="url(#shine)" rx="24"/>
-  <text x="300" y="270" font-family="system-ui, -apple-system, sans-serif" font-size="80" text-anchor="middle" dominant-baseline="central">🔋</text>
-  <rect x="60" y="380" width="480" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
-  <text x="300" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="700" fill="white" text-anchor="middle">Anker 737 - Side</text>
-  <text x="300" y="455" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="rgba(255,255,255,0.6)" text-anchor="middle">Anker</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450" width="300" height="450">
+  <rect width="300" height="450" fill="#f8fafc" rx="20"/>
+  <rect x="1" y="1" width="298" height="448" rx="19" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="70" y="80" width="160" height="260" rx="20" fill="#004499" opacity="0.1"/>
+  <rect x="80" y="95" width="140" height="230" rx="16" fill="#004499" opacity="0.06"/>
+  <rect x="130" y="60" width="40" height="15" rx="4" fill="#004499" opacity="0.15"/>
+  <circle cx="150" cy="370" r="10" fill="#004499" opacity="0.3"/>
+  <circle cx="150" cy="395" r="10" fill="#004499" opacity="0.15"/>
+  <rect x="125" y="120" width="50" height="8" rx="4" fill="#004499" opacity="0.15"/>
+  <rect x="125" y="140" width="50" height="4" rx="2" fill="#004499" opacity="0.1"/>
+  <text x="150" y="415" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#004499" text-anchor="middle">Anker 737 - Side</text>
+  <text x="150" y="438" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Anker</text>
 </svg>

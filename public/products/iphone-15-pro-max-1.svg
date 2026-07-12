@@ -1,18 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
-  <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#2C2C2E"/>
-      <stop offset="100%" style="stop-color:#636366"/>
-    </linearGradient>
-    <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:rgba(255,255,255,0.15)"/>
-      <stop offset="100%" style="stop-color:rgba(255,255,255,0)"/>
-    </linearGradient>
-  </defs>
-  <rect width="600" height="600" fill="url(#bg)" rx="24"/>
-  <rect width="600" height="300" fill="url(#shine)" rx="24"/>
-  <text x="300" y="270" font-family="system-ui, -apple-system, sans-serif" font-size="80" text-anchor="middle" dominant-baseline="central">📷</text>
-  <rect x="60" y="380" width="480" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
-  <text x="300" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="700" fill="white" text-anchor="middle">iPhone 15 Pro Max - Back</text>
-  <text x="300" y="455" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="rgba(255,255,255,0.6)" text-anchor="middle">Apple</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500">
+  <rect width="400" height="500" fill="#f8fafc" rx="20"/>
+  <rect x="1" y="1" width="398" height="498" rx="19" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="100" y="60" width="200" height="350" rx="24" fill="#2C2C2E" opacity="0.15"/>
+  <rect x="110" y="70" width="180" height="310" rx="18" fill="#2C2C2E" opacity="0.08"/>
+  <rect x="120" y="85" width="160" height="240" rx="12" fill="#2C2C2E" opacity="0.12"/>
+  <circle cx="200" cy="440" r="15" fill="none" stroke="#2C2C2E" stroke-width="2" opacity="0.3"/>
+  <rect x="180" y="45" width="40" height="6" rx="3" fill="#2C2C2E" opacity="0.4"/>
+  <text x="200" y="400" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#2C2C2E" text-anchor="middle">iPhone 15 Pro Max - Back</text>
+  <text x="200" y="470" font-family="system-ui, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">Apple</text>
 </svg>

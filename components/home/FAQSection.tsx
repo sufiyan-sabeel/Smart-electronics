@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
@@ -54,9 +55,9 @@ export function FAQSection() {
         >
           <p className="text-slate-600 dark:text-slate-400">
             Still have questions? 
-            <a href="/contact" className="text-primary-600 dark:text-primary-400 font-medium hover:underline ml-1">
+            <Link href="/contact" className="text-primary-600 dark:text-primary-400 font-medium hover:underline ml-1">
               Contact us directly
-            </a>
+            </Link>
           </p>
         </motion.div>
       </div>
