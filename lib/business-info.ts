@@ -50,7 +50,7 @@ export const siteConfig = {
   name: businessInfo.name,
   description: "Smart Electronics - Chikkamagaluru's trusted electronics store for smartphones, laptops, accessories, and repair services. Authorized retailer with genuine products and warranty.",
   url: "https://smartelectronics.demo",
-  ogImage: "/og-image.jpg",
+  ogImage: "/og-image.svg",
   keywords: [
     "electronics store",
     "smartphones",

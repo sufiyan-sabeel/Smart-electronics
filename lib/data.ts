@@ -53,11 +53,11 @@ export const products: Product[] = [
     originalPrice: 139999,
     category: "smartphones",
     brand: "samsung",
-    image: "/products/galaxy-s24-ultra.jpg",
+    image: "/products/galaxy-s24-ultra.svg",
     images: [
-      "/products/galaxy-s24-ultra-1.jpg",
-      "/products/galaxy-s24-ultra-2.jpg",
-      "/products/galaxy-s24-ultra-3.jpg",
+      "/products/galaxy-s24-ultra-1.svg",
+      "/products/galaxy-s24-ultra-2.svg",
+      "/products/galaxy-s24-ultra-3.svg",
     ],
     features: [
       "200MP Main Camera with 100x Space Zoom",
@@ -91,10 +91,10 @@ export const products: Product[] = [
     originalPrice: 164900,
     category: "smartphones",
     brand: "apple",
-    image: "/products/iphone-15-pro-max.jpg",
+    image: "/products/iphone-15-pro-max.svg",
     images: [
-      "/products/iphone-15-pro-max-1.jpg",
-      "/products/iphone-15-pro-max-2.jpg",
+      "/products/iphone-15-pro-max-1.svg",
+      "/products/iphone-15-pro-max-2.svg",
     ],
     features: [
       "A17 Pro Chip with 6-Core GPU",
@@ -128,10 +128,10 @@ export const products: Product[] = [
     originalPrice: 119900,
     category: "laptops",
     brand: "apple",
-    image: "/products/macbook-air-m3.jpg",
+    image: "/products/macbook-air-m3.svg",
     images: [
-      "/products/macbook-air-m3-1.jpg",
-      "/products/macbook-air-m3-2.jpg",
+      "/products/macbook-air-m3-1.svg",
+      "/products/macbook-air-m3-2.svg",
     ],
     features: [
       "Apple M3 Chip with 8-Core CPU",
@@ -165,10 +165,10 @@ export const products: Product[] = [
     originalPrice: 199990,
     category: "laptops",
     brand: "dell",
-    image: "/products/dell-xps-14.jpg",
+    image: "/products/dell-xps-14.svg",
     images: [
-      "/products/dell-xps-14-1.jpg",
-      "/products/dell-xps-14-2.jpg",
+      "/products/dell-xps-14-1.svg",
+      "/products/dell-xps-14-2.svg",
     ],
     features: [
       "Intel Core Ultra 7 Processor",
@@ -202,10 +202,10 @@ export const products: Product[] = [
     originalPrice: 39999,
     category: "smart-watches",
     brand: "samsung",
-    image: "/products/galaxy-watch6-classic.jpg",
+    image: "/products/galaxy-watch6-classic.svg",
     images: [
-      "/products/galaxy-watch6-classic-1.jpg",
-      "/products/galaxy-watch6-classic-2.jpg",
+      "/products/galaxy-watch6-classic-1.svg",
+      "/products/galaxy-watch6-classic-2.svg",
     ],
     features: [
       "Signature Rotating Bezel",
@@ -238,10 +238,10 @@ export const products: Product[] = [
     originalPrice: 26900,
     category: "earbuds",
     brand: "apple",
-    image: "/products/airpods-pro-2.jpg",
+    image: "/products/airpods-pro-2.svg",
     images: [
-      "/products/airpods-pro-2-1.jpg",
-      "/products/airpods-pro-2-2.jpg",
+      "/products/airpods-pro-2-1.svg",
+      "/products/airpods-pro-2-2.svg",
     ],
     features: [
       "Up to 2x More Active Noise Cancellation",
@@ -275,10 +275,10 @@ export const products: Product[] = [
     originalPrice: 34990,
     category: "earbuds",
     brand: "sony",
-    image: "/products/sony-wh1000xm5.jpg",
+    image: "/products/sony-wh1000xm5.svg",
     images: [
-      "/products/sony-wh1000xm5-1.jpg",
-      "/products/sony-wh1000xm5-2.jpg",
+      "/products/sony-wh1000xm5-1.svg",
+      "/products/sony-wh1000xm5-2.svg",
     ],
     features: [
       "Auto NC Optimizer",
@@ -312,10 +312,10 @@ export const products: Product[] = [
     originalPrice: 17999,
     category: "speakers",
     brand: "jbl",
-    image: "/products/jbl-charge-5.jpg",
+    image: "/products/jbl-charge-5.svg",
     images: [
-      "/products/jbl-charge-5-1.jpg",
-      "/products/jbl-charge-5-2.jpg",
+      "/products/jbl-charge-5-1.svg",
+      "/products/jbl-charge-5-2.svg",
     ],
     features: [
       "JBL Original Pro Sound",
@@ -348,9 +348,9 @@ export const products: Product[] = [
     originalPrice: 15999,
     category: "power-banks",
     brand: "anker",
-    image: "/products/anker-737-powerbank.jpg",
+    image: "/products/anker-737-powerbank.svg",
     images: [
-      "/products/anker-737-powerbank-1.jpg",
+      "/products/anker-737-powerbank-1.svg",
     ],
     features: [
       "24,000mAh Capacity",
@@ -385,9 +385,9 @@ export const products: Product[] = [
     originalPrice: 1999,
     category: "cables",
     brand: "belkin",
-    image: "/products/belkin-cable.jpg",
+    image: "/products/belkin-cable.svg",
     images: [
-      "/products/belkin-cable-1.jpg",
+      "/products/belkin-cable-1.svg",
     ],
     features: [
       "240W Power Delivery 3.1",
@@ -531,7 +531,7 @@ export const testimonials = [
     location: "Chikkamagaluru",
     rating: 5,
     text: "Excellent service! Got my iPhone screen replaced in under an hour with genuine parts. Staff was professional and explained everything clearly. Highly recommended!",
-    avatar: "/avatars/rajesh.jpg",
+    avatar: "/avatars/rajesh.svg",
     verified: true,
   },
   {
@@ -540,7 +540,7 @@ export const testimonials = [
     location: "Bangalore",
     rating: 5,
     text: "Bought a MacBook Air M3 from here. Best price in town with student discount. They helped with data transfer and setup. Great after-sales support too.",
-    avatar: "/avatars/priya.jpg",
+    avatar: "/avatars/priya.svg",
     verified: true,
   },
   {
@@ -549,7 +549,7 @@ export const testimonials = [
     location: "Mangalore",
     rating: 4,
     text: "Good experience with laptop repair. My Dell XPS had heating issues, they cleaned the cooling system and replaced thermal paste. Working perfectly now.",
-    avatar: "/avatars/amit.jpg",
+    avatar: "/avatars/amit.svg",
     verified: true,
   },
   {
@@ -558,7 +558,7 @@ export const testimonials = [
     location: "Mysore",
     rating: 5,
     text: "Ordered Samsung Galaxy S24 Ultra via WhatsApp. Got it delivered same day with all accessories. Price was better than online. Will definitely buy again!",
-    avatar: "/avatars/sneha.jpg",
+    avatar: "/avatars/sneha.svg",
     verified: true,
   },
 ]
